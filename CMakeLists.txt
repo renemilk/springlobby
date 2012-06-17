@@ -85,41 +85,28 @@ ENDIF( AUX_VERSION )
 
 # Here you can define, what Libraries of wxWidgets you need for your Application. You can figure out what Libraries you need here:
 # http://www.wxwidgets.org/manuals/2.8/wx_librarieslist.html
-IF(NOT CMAKE_CROSSCOMPILING)
 SET(wxWidgets_USE_LIBS base core net adv aui html xml qa)
 
 # We need the Find package for wxWidgets to work
-FIND_PACKAGE(wxWidgets REQUIRED base core net adv aui html xml qa)
+# FIND_PACKAGE(wxWidgets REQUIRED base core net adv aui html xml qa)
 
 # Did we find wxWidgets ? This condition will fail for as long as the internal Vars do not point to the proper wxWidgets Configuration.
 IF(wxWidgets_FOUND)
 	# Include wxWidgets macros
-	INCLUDE(${wxWidgets_USE_FILE})
-	IF(MSVC)
-		INCLUDE_DIRECTORIES( ${wxWidgets_ROOT_DIR}/include/msvc )
-	ENDIF(MSVC)
-	IF(MINGW)
-		SET(wxWidgets_RC_DIR ${wxWidgets_ROOT_DIR}/include)
-	ENDIF(MINGW)
+# 	INCLUDE(${wxWidgets_USE_FILE})
 	INCLUDE_DIRECTORIES( ${wxWidgets_INCLUDE_DIRS} )
 ELSE(wxWidgets_FOUND)
 	# For Convenience. If we cannot continue, inform the User.
 	MESSAGE( FATAL_ERROR "wxWidgets library not found! Please install the package to continue")
 ENDIF(wxWidgets_FOUND)
-ELSE (NOT CMAKE_CROSSCOMPILING)
-    INCLUDE_DIRECTORIES( ${wxWidgets_INCLUDE_DIRS} )
-    link_directories( ${wxWidgets_LIB_DIR} )
-ENDIF(NOT CMAKE_CROSSCOMPILING)
 
 #----------------------------------------------------------------------------------------------------
 # openAL libs dependency check
 #----------------------------------------------------------------------------------------------------
 
 IF ( OPTION_SOUND )
-
 	FIND_PACKAGE(OpenAL REQUIRED)
 	INCLUDE_DIRECTORIES(${OPENAL_INCLUDE_DIR})
-
 	Add_Subdirectory( ${springlobby_SOURCE_DIR}/src/sound/alure )
 	INCLUDE_DIRECTORIES( ${springlobby_SOURCE_DIR}/src/sound/alure/include )
 	LINK_LIBRARIES( ${OPENAL_LIBRARY} ${springlobby_BINARY_DIR}/src/sound/alure/libalure.a )
@@ -133,7 +120,7 @@ IF( ENABLE_DEBUG_REPORT )
 	ADD_DEFINITIONS( -DENABLE_DEBUG_REPORT )
 	IF( MINGW )
 		ADD_DEFINITIONS( -gstabs )
-		LINK_LIBRARIES( bfd iberty intl drmingw )
+		LINK_LIBRARIES( bfd iberty intl )
 	ENDIF( MINGW )
 	LIST( APPEND SLSharedWithSettings ${curlSRC} )
 ENDIF( ENABLE_DEBUG_REPORT )
@@ -174,20 +161,38 @@ ENDIF( OPTION_NOTIFY AND NOT WIN32 )
 
 # If we build for windows Systems, we also include the Resource-File containing the Manifest, Icon and other Resources.
 IF(WIN32)
-	IF(MINGW OR CMAKE_CROSSCOMPILING)
-		FIND_PROGRAM(WINDRES NAMES i586-pc-mingw32-windres windres i686-mingw32-windres DOC "path to mingw's windres executable")
-		ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/sl_icon.o COMMAND ${WINDRES} -I${springlobby_SOURCE_DIR}/src -I${wxWidgets_RC_DIR} -i${springlobby_SOURCE_DIR}/src/springlobby.rc -o ${CMAKE_CURRENT_BINARY_DIR}/sl_icon.o)
-		ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/ss_icon.o COMMAND ${WINDRES} -I${springlobby_SOURCE_DIR}/src -I${wxWidgets_RC_DIR} -i${springlobby_SOURCE_DIR}/src/springsettings/settings.rc -o ${CMAKE_CURRENT_BINARY_DIR}/ss_icon.o)
-		ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/su_icon.o COMMAND ${WINDRES} -I${springlobby_SOURCE_DIR}/src -I${wxWidgets_RC_DIR} -i${springlobby_SOURCE_DIR}/src/updater/updater.rc -o ${CMAKE_CURRENT_BINARY_DIR}/su_icon.o)
-		SET(springlobby_RC_FILE ${CMAKE_CURRENT_BINARY_DIR}/sl_icon.o )
-		SET(SpringSettings_RC_FILE ${CMAKE_CURRENT_BINARY_DIR}/ss_icon.o )
-		SET(updater_RC_FILE ${CMAKE_CURRENT_BINARY_DIR}/su_icon.o )
-	ENDIF(MINGW OR CMAKE_CROSSCOMPILING)
+	MACRO    (CreateResourceCompileCommand out_var dirIn fileIn fileOut)
+	    ADD_CUSTOM_COMMAND(
+		    OUTPUT
+			    "${fileOut}"
+		    DEPENDS
+			    "${fileIn}" 
+		    COMMAND
+			    "${CMAKE_RC_COMPILER}"
+				    "-I${dirIn}"
+				    "-i${fileIn}" 
+				    "-o" "${fileOut}"
+				    "-v"
+		    )
+	    SET_SOURCE_FILES_PROPERTIES(${fileOut} PROPERTIES
+		    GENERATED      TRUE
+		    OBJECT_DEPENDS ${fileIn}
+		    )
+	    SET(${out_var} "${fileOut}")
+	ENDMACRO (CreateResourceCompileCommand out_var dirIn fileIn fileOut)
+# 
+# 	 63         SET(ENGINE_ICON_DIR "${ENGINE_SRC_ROOT_DIR}")
+#  64         SET(ENGINE_ICON_RES "${ENGINE_SRC_ROOT_DIR}/icon.rc")
+#  65         SET(ENGINE_ICON_OBJ "${CMAKE_CURRENT_BINARY_DIR}/icon.o")
+#  66         CreateResourceCompileCommand(ENGINE_ICON "${ENGINE_ICON_DIR}" "${ENGINE_ICON_RES}" "${ENGINE_ICON_OBJ}")
 
-	SET(springlobbySrc ${springlobbySrc} src/Helper/listctrl.cpp)
-	SET(springlobbySrc ${springlobbySrc} src/springlobby.rc)
-	SET(updaterSrc ${updaterSrc} src/updater/updater.rc)
-	SET(StandAloneSettings ${StandAloneSettings} src/springsettings/settings.rc)
+	CreateResourceCompileCommand(springlobby_RC_FILE ${springlobby_SOURCE_DIR}/src/ springlobby.rc sl_icon.o )
+	CreateResourceCompileCommand(springsettings_RC_FILE ${springlobby_SOURCE_DIR}/src/ settings.rc ss_icon.o )
+	CreateResourceCompileCommand(updater_RC_FILE ${springlobby_SOURCE_DIR}/src/updater updater.rc su_icon.o )
+
+	SET(springlobbySrc ${springlobbySrc} ${springlobby_RC_FILE})
+	SET(updaterSrc ${updaterSrc} ${updater_RC_FILE})
+	SET(StandAloneSettings ${StandAloneSettings} ${springsettings_RC_FILE})
 ELSE(WIN32)
 # If we don't build for windows, include some source code checks as pre-build step.
     ADD_CUSTOM_TARGET(test_susynclib ALL COMMAND tools/test-susynclib.awk src/springunitsynclib.cpp WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
