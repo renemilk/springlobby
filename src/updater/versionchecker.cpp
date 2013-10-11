@@ -1,6 +1,6 @@
 #ifdef _MSC_VER
 #ifndef NOMINMAX
-    #define NOMINMAX
+#define NOMINMAX
 #endif // NOMINMAX
 #include <winsock2.h>
 #endif // _MSC_VER
@@ -12,30 +12,24 @@
 #include "../utils/debug.h"
 #include "../utils/customdialogs.h"
 
-
 //! @brief gets latest version from version.springlobby.info via HTTP
-wxString GetLatestVersion()
-{
+wxString GetLatestVersion() {
   wxHTTP versionRequest;
 
   versionRequest.SetHeader(_T("Content-type"), _T("text/html; charset=utf-8"));
   // normal timeout is 10 minutes.. set to 10 secs.
   versionRequest.SetTimeout(10);
-  versionRequest.Connect( _T("version.springlobby.info"), 80);
-  wxInputStream *stream = versionRequest.GetInputStream( _T("/current.txt") );
+  versionRequest.Connect(_T("version.springlobby.info"), 80);
+  wxInputStream* stream = versionRequest.GetInputStream(_T("/current.txt"));
   wxString result;
 
-  if (versionRequest.GetError() == wxPROTO_NOERR)
-  {
+  if (versionRequest.GetError() == wxPROTO_NOERR) {
 
     wxStringOutputStream output(&result);
     stream->Read(output);
-  }
-  else
-  {
+  } else {
     wxString err;
-    switch (versionRequest.GetError())
-    {
+    switch (versionRequest.GetError()) {
 
       case wxPROTO_NETERR:
         err = _T("Network Error");
@@ -75,7 +69,7 @@ wxString GetLatestVersion()
   wxDELETE(stream);
   versionRequest.Close();
 
-    // Need to replace crap chars or versions will always be inequal
+  // Need to replace crap chars or versions will always be inequal
   result.Replace(_T(" "), _T(""), true);
   result.Replace(_T("\n"), _T(""), true);
   result.Replace(_T("\t"), _T(""), true);

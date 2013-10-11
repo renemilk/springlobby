@@ -14,53 +14,48 @@ class ColorButton;
 class WidgetDownloadDialog;
 class ContentDownloadDialog;
 
-typedef std::map<wxString,DownloadInfo> map_infos;
+typedef std::map<wxString, DownloadInfo> map_infos;
 typedef map_infos::iterator map_infos_iter;
 
-class MainDownloadTab: public wxScrolledWindow
-{
-	public:
+class MainDownloadTab : public wxScrolledWindow {
+public:
+  MainDownloadTab(wxWindow* parent);
+  ~MainDownloadTab();
 
-		MainDownloadTab( wxWindow* parent );
-		~MainDownloadTab();
+  void OnUpdate();
 
-        void OnUpdate();
+protected:
+  enum {
+    ID_LIST = wxID_HIGHEST,
+    ID_BUTTON_CANCEL,
+    ID_OUTGOING,
+    ID_INCOMING,
+    ID_OUTGOING_LBL,
+    ID_INCOMING_LBL,
+    ID_DOWNLOAD_DIALOG,
+    ID_BUTTON_CLEAR,
+    ID_BUTTON_WIDGETS
+  };
 
-	protected:
+  wxButton* m_but_cancel;
+  wxButton* m_but_clear;
+  DownloadListCtrl* m_dl_listctrl;
+  WidgetDownloadDialog* m_widgets_dialog;
 
-		enum
-		{
-            ID_LIST = wxID_HIGHEST,
-            ID_BUTTON_CANCEL,
-            ID_OUTGOING,
-            ID_INCOMING,
-            ID_OUTGOING_LBL,
-            ID_INCOMING_LBL,
-            ID_DOWNLOAD_DIALOG,
-            ID_BUTTON_CLEAR,
-            ID_BUTTON_WIDGETS
-        };
+  void OnCancelButton(wxCommandEvent& event);
+  void OnDownloadDialog(wxCommandEvent& event);
+  void OnDLWidgets(wxCommandEvent& event);
+  void OnClearFinished(wxCommandEvent& event);
 
-		wxButton* m_but_cancel;
-		wxButton* m_but_clear;
-		DownloadListCtrl* m_dl_listctrl;
-        WidgetDownloadDialog* m_widgets_dialog;
+  wxBoxSizer* m_mainbox;
 
-        void OnCancelButton( wxCommandEvent& event );
-		void OnDownloadDialog( wxCommandEvent& event );
-        void OnDLWidgets( wxCommandEvent& event );
-        void OnClearFinished( wxCommandEvent& event );
+private:
+  //(*Handlers(MainTorrentTab)
+  //*)
 
-        wxBoxSizer* m_mainbox;
-
-	private:
-
-		//(*Handlers(MainTorrentTab)
-		//*)
-
-		DECLARE_EVENT_TABLE()
-		ContentDownloadDialog* m_download_dialog;
-		wxButton* m_but_download;
+  DECLARE_EVENT_TABLE()
+  ContentDownloadDialog* m_download_dialog;
+  wxButton* m_but_download;
 };
 
 #endif
@@ -81,4 +76,3 @@ class MainDownloadTab: public wxScrolledWindow
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

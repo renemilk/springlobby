@@ -15,7 +15,6 @@
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-
 #include "pastedialog.h"
 
 #include <wx/icon.h>
@@ -33,65 +32,60 @@
 #include "../customizations.h"
 
 #ifdef HAVE_WX29
-	//in < 29 this is defined in wxDialogBase, which seems to have disappeared
-	enum { ButtonSizerFlags = wxOK|wxCANCEL|wxYES|wxNO|wxHELP|wxNO_DEFAULT };
+// in < 29 this is defined in wxDialogBase, which seems to have disappeared
+enum {
+  ButtonSizerFlags = wxOK | wxCANCEL | wxYES | wxNO | wxHELP | wxNO_DEFAULT
+};
 #endif
 
-BEGIN_EVENT_TABLE(PasteDialog,wxDialog)
-		EVT_BUTTON(ID_PASTE_BUTTON, PasteDialog::OnPasteButton)
-		EVT_BUTTON(wxID_NO, PasteDialog::OnOptionsNo)
+BEGIN_EVENT_TABLE(PasteDialog, wxDialog)
+EVT_BUTTON(ID_PASTE_BUTTON, PasteDialog::OnPasteButton)
+EVT_BUTTON(wxID_NO, PasteDialog::OnOptionsNo)
 END_EVENT_TABLE()
 
-PasteDialog::PasteDialog( wxWindow *parent, const wxString& message )
-	: wxDialog(parent,-1,_( "Flood warning" ),wxDefaultPosition,wxDefaultSize,wxFRAME_FLOAT_ON_PARENT|wxDEFAULT_DIALOG_STYLE)
-{
-	SetIcons( SLcustomizations().GetAppIconBundle() );
+PasteDialog::PasteDialog(wxWindow* parent, const wxString& message)
+  : wxDialog(parent, -1, _("Flood warning"), wxDefaultPosition, wxDefaultSize,
+             wxFRAME_FLOAT_ON_PARENT | wxDEFAULT_DIALOG_STYLE) {
+  SetIcons(SLcustomizations().GetAppIconBundle());
 
-//******** copied from wxsource/generic/msgdlgg.cpp with small modifications***********************************************************
-	wxBoxSizer *topsizer = new wxBoxSizer( wxVERTICAL );
+  //******** copied from wxsource/generic/msgdlgg.cpp with small
+  // modifications***********************************************************
+  wxBoxSizer* topsizer = new wxBoxSizer(wxVERTICAL);
 
-	wxBoxSizer *icon_text = new wxBoxSizer( wxHORIZONTAL );
+  wxBoxSizer* icon_text = new wxBoxSizer(wxHORIZONTAL);
 
-	wxBitmap bitmap = wxArtProvider::GetIcon(wxART_QUESTION, wxART_MESSAGE_BOX);
+  wxBitmap bitmap = wxArtProvider::GetIcon(wxART_QUESTION, wxART_MESSAGE_BOX);
 
-	wxStaticBitmap *info_icon = new wxStaticBitmap(this, wxID_ANY, bitmap);
-	icon_text->Add( info_icon, 0, wxCENTER );
+  wxStaticBitmap* info_icon = new wxStaticBitmap(this, wxID_ANY, bitmap);
+  icon_text->Add(info_icon, 0, wxCENTER);
 
-	// 2) text
-	icon_text->Add( CreateTextSizer( message ), 0, wxALIGN_TOP| wxLEFT, 10 );
+  // 2) text
+  icon_text->Add(CreateTextSizer(message), 0, wxALIGN_TOP | wxLEFT, 10);
 
-	topsizer->Add( icon_text, 1, wxCENTER | wxLEFT|wxRIGHT|wxTOP, 10 );
-	topsizer->Add(0,10);
+  topsizer->Add(icon_text, 1, wxCENTER | wxLEFT | wxRIGHT | wxTOP, 10);
+  topsizer->Add(0, 10);
 
-	// 3) buttons
-	wxSizer *sizerBtn = CreateButtonSizer(wxYES_NO);
-	if ( sizerBtn ) {
-		wxButton* but = new wxButton( this, ID_PASTE_BUTTON, _("Use pastebin") );
-		sizerBtn->Add( but, 0, wxALL, 10 );
-		topsizer->Add(sizerBtn, 0, wxALIGN_CENTRE| wxALL, 10 );
-		but->SetFocus();
-	}
+  // 3) buttons
+  wxSizer* sizerBtn = CreateButtonSizer(wxYES_NO);
+  if (sizerBtn) {
+    wxButton* but = new wxButton(this, ID_PASTE_BUTTON, _("Use pastebin"));
+    sizerBtn->Add(but, 0, wxALL, 10);
+    topsizer->Add(sizerBtn, 0, wxALIGN_CENTRE | wxALL, 10);
+    but->SetFocus();
+  }
 
+  SetAutoLayout(true);
+  SetSizer(topsizer);
 
-	SetAutoLayout( true );
-	SetSizer( topsizer );
+  topsizer->SetSizeHints(this);
+  topsizer->Fit(this);
 
-	topsizer->SetSizeHints( this );
-	topsizer->Fit( this );
-
-	Centre( wxBOTH | wxCENTER_FRAME);
-/***************************************************************************************************/
+  Centre(wxBOTH | wxCENTER_FRAME);
+  /***************************************************************************************************/
 }
 
-PasteDialog::~PasteDialog()
-{}
+PasteDialog::~PasteDialog() {}
 
-void PasteDialog::OnPasteButton( wxCommandEvent& /*evt*/ )
-{
-	EndModal( pasteButtonReturnCode );
-}
+void PasteDialog::OnPasteButton(wxCommandEvent& /*evt*/) { EndModal(pasteButtonReturnCode); }
 
-void PasteDialog::OnOptionsNo(wxCommandEvent& /*unused*/)
-{
-   EndModal(wxID_NO);
-}
+void PasteDialog::OnOptionsNo(wxCommandEvent& /*unused*/) { EndModal(wxID_NO); }

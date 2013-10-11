@@ -38,62 +38,62 @@ template <class P>
 class SlSpinCtrlDouble;
 class SlSpinDoubleEvent;
 
-class tab_quality_video : public abstract_panel
-{
+class tab_quality_video : public abstract_panel {
 
-	public:
-		tab_quality_video(wxWindow *parent, wxWindowID id, const wxString &title = wxT("Project2"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0);
-		virtual ~tab_quality_video();
+public:
+  tab_quality_video(wxWindow* parent, wxWindowID id, const wxString& title = wxT("Project2"),
+                    const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0);
+  virtual ~tab_quality_video();
 
-		void initVideoSizer(wxFlexGridSizer*);
-		void initQualitySizer(wxFlexGridSizer* );
-		void initAASizer(wxFlexGridSizer* );
-		void initZBufferSizer(wxFlexGridSizer* );
-		void initW4Sizer(wxSizer* );
-		void updateControls(int);
-		virtual void OnComboBoxChange(wxCommandEvent& event);
-		void OnSpinCtrlDoubleChange(SlSpinDoubleEvent& event);
+  void initVideoSizer(wxFlexGridSizer*);
+  void initQualitySizer(wxFlexGridSizer*);
+  void initAASizer(wxFlexGridSizer*);
+  void initZBufferSizer(wxFlexGridSizer*);
+  void initW4Sizer(wxSizer*);
+  void updateControls(int);
+  virtual void OnComboBoxChange(wxCommandEvent& event);
+  void OnSpinCtrlDoubleChange(SlSpinDoubleEvent& event);
 
-	private:
-		void OnClose(wxCloseEvent& event);
-		void CreateGUIControls();
+private:
+  void OnClose(wxCloseEvent& event);
+  void CreateGUIControls();
 
-		wxComboBox* ctrl_waterQ_CBox;
-		wxComboBox* ctrl_shadows_CBox;
-		wxCheckBox** ctrl_vo_Boxes;
-		static const int ctrl_vo_Boxes_size = 3;
-		wxTextCtrl* ctrl_x_res;
-		wxTextCtrl* ctrl_y_res;
-		wxCheckBox** ctrl_qa_Boxes;
-		static const int ctrl_qa_Boxes_size = 12;
-		wxSlider* ctrl_fsaa_slider;
+  wxComboBox* ctrl_waterQ_CBox;
+  wxComboBox* ctrl_shadows_CBox;
+  wxCheckBox** ctrl_vo_Boxes;
+  static const int ctrl_vo_Boxes_size = 3;
+  wxTextCtrl* ctrl_x_res;
+  wxTextCtrl* ctrl_y_res;
+  wxCheckBox** ctrl_qa_Boxes;
+  static const int ctrl_qa_Boxes_size = 12;
+  wxSlider* ctrl_fsaa_slider;
 
-		wxRadioButton* ctrl_z_radio1;
-		wxRadioButton* ctrl_z_radio2;
+  wxRadioButton* ctrl_z_radio1;
+  wxRadioButton* ctrl_z_radio2;
 
-		wxSizer* parentSizer ;
-        wxSizer* leftSizer ;
-        wxSizer* middleSizer;
-        wxSizer* rightSizer;
-        wxFlexGridSizer* SizerA ;
-        wxFlexGridSizer* SizerB ;
-        wxFlexGridSizer* SizerC ;
-        wxFlexGridSizer* SizerD ;
-        wxBoxSizer* SizerE ;
-        wxStaticBoxSizer* boxA ;
-        wxStaticBoxSizer* boxB ;
-        wxStaticBoxSizer* boxC ;
-        wxStaticBoxSizer* boxD ;
-        wxStaticBoxSizer* boxE ;
+  wxSizer* parentSizer;
+  wxSizer* leftSizer;
+  wxSizer* middleSizer;
+  wxSizer* rightSizer;
+  wxFlexGridSizer* SizerA;
+  wxFlexGridSizer* SizerB;
+  wxFlexGridSizer* SizerC;
+  wxFlexGridSizer* SizerD;
+  wxBoxSizer* SizerE;
+  wxStaticBoxSizer* boxA;
+  wxStaticBoxSizer* boxB;
+  wxStaticBoxSizer* boxC;
+  wxStaticBoxSizer* boxD;
+  wxStaticBoxSizer* boxE;
 
-        bool m_enable_w4;
+  bool m_enable_w4;
 
-        std::vector<wxControl*> m_w4_controls;
+  std::vector<wxControl*> m_w4_controls;
 
-        SlSpinCtrlDouble<tab_quality_video>* m_aniso_spin;
+  SlSpinCtrlDouble<tab_quality_video>* m_aniso_spin;
 
-    protected:
-		DECLARE_EVENT_TABLE()
+protected:
+  DECLARE_EVENT_TABLE()
 };
 
 #endif

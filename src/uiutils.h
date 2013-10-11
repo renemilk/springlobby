@@ -14,65 +14,58 @@ class wxImage;
 class wxIcon;
 class wxBitmap;
 
-wxString RTFtoText( const wxString& rtfinput );
-bool AreColoursSimilar( const wxColour& col1, const wxColour& col2, int mindiff = 10 );
+wxString RTFtoText(const wxString& rtfinput);
+bool AreColoursSimilar(const wxColour& col1, const wxColour& col2, int mindiff = 10);
 
-void ColourDelta( int& r, int& g, int& b, const int& delta );
-wxColour ColourDelta( const wxColour& colour, const int& delta );
+void ColourDelta(int& r, int& g, int& b, const int& delta);
+wxColour ColourDelta(const wxColour& colour, const int& delta);
 
-wxColour GetColorFromFloatStrng( const wxString& color );
+wxColour GetColorFromFloatStrng(const wxString& color);
 
 //! takes best fitting size of original inside bounds keeping aspect ratio
-wxSize MakeFit(const wxSize &original, const wxSize &bounds);
+wxSize MakeFit(const wxSize& original, const wxSize& bounds);
 
 //! apply standard alpha blending to images
-wxImage BlendImage( const wxImage& foreground, const wxImage& background, bool blend_alpha = true );
-wxBitmap BlendBitmaps( const wxBitmap& background, const wxBitmap& overlay, const int dim = 16 );
+wxImage BlendImage(const wxImage& foreground, const wxImage& background, bool blend_alpha = true);
+wxBitmap BlendBitmaps(const wxBitmap& background, const wxBitmap& overlay, const int dim = 16);
 //! used to load png data into a wxImage
-wxImage charArr2wxImage(const unsigned char * arg, int size);
+wxImage charArr2wxImage(const unsigned char* arg, int size);
 //! used to load png data into a wxBitmap
-wxBitmap charArr2wxBitmap(const unsigned char * arg, int size);
-wxBitmap charArr2wxBitmapWithBlending(const unsigned char * arg, int size,
-            const unsigned char * text, int text_size);
+wxBitmap charArr2wxBitmap(const unsigned char* arg, int size);
+wxBitmap charArr2wxBitmapWithBlending(const unsigned char* arg, int size, const unsigned char* text, int text_size);
 //! png array data to Icon
-wxIcon charArr2wxIcon(const unsigned char * arg, int size);
+wxIcon charArr2wxIcon(const unsigned char* arg, int size);
 
-wxBitmap getColourIcon( const wxColour& colour );
+wxBitmap getColourIcon(const wxColour& colour);
 
 //! shrinks/expands image by removing/duplicating rows/columns from the center of the image
-wxImage BorderInvariantResizeImage(  const wxImage& image, int width, int height );
+wxImage BorderInvariantResizeImage(const wxImage& image, int width, int height);
 
+wxImage ReplaceChannelStatusColour(wxBitmap img, const wxColour& colour);
 
-wxImage ReplaceChannelStatusColour( wxBitmap img, const wxColour& colour );
+std::vector<wxColour>& GetBigFixColoursPalette(int numteams);
 
-std::vector<wxColour>& GetBigFixColoursPalette( int numteams );
-
-
-void CopyToClipboard( const wxString& text );
+void CopyToClipboard(const wxString& text);
 
 //! open either plattform default browser or binary saved in settings with given url
-void OpenWebBrowser( const wxString& url );
+void OpenWebBrowser(const wxString& url);
 
 class wxDateTime;
 //! measures time diff between ctor and dtor, shows result in msg box
-struct TimerMessageBox: public SL::NonCopyable {
-	//! msg_format must contain exactly one %s to be filled with the elapsed time
-	TimerMessageBox( const wxString& msg_format );
-	~TimerMessageBox();
-	wxDateTime* m_start;
-	wxString m_msg_format;
+struct TimerMessageBox : public SL::NonCopyable {
+  //! msg_format must contain exactly one %s to be filled with the elapsed time
+  TimerMessageBox(const wxString& msg_format);
+  ~TimerMessageBox();
+  wxDateTime* m_start;
+  wxString m_msg_format;
 };
 
-inline wxString bool2yn(const bool b) {
-    return b ? _("Yes") : _("No");
-}
+inline wxString bool2yn(const bool b) { return b ? _("Yes") : _("No"); }
 
 DECLARE_EVENT_TYPE(REFRESH_EVENT, wxID_ANY)
 
 #endif
 // SPRINGLOBBY_HEADERGUARD_UIUTILS_H
-
-
 
 /**
     This file is part of SpringLobby,
@@ -90,4 +83,3 @@ DECLARE_EVENT_TYPE(REFRESH_EVENT, wxID_ANY)
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

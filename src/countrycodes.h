@@ -3,7 +3,7 @@
 
 class wxString;
 
-wxString GetFlagNameFromCountryCode( const wxString& cc );
+wxString GetFlagNameFromCountryCode(const wxString& cc);
 
 #endif // SPRINGLOBBY_HEADERGUARD_COUNTRYCODES_H
 
@@ -23,4 +23,3 @@ wxString GetFlagNameFromCountryCode( const wxString& cc );
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

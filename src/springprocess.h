@@ -1,7 +1,6 @@
 #ifndef SPRINGLOBBY_HEADERGUARD_SPRINGPROCESS_H
 #define SPRINGLOBBY_HEADERGUARD_SPRINGPROCESS_H
 
-
 /**
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -14,8 +13,6 @@ lsl/spring/springprocess.h
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 **/
 
-
-
 #include <wx/thread.h>
 #include <wx/string.h>
 typedef wxThread SpringProcessBase;
@@ -23,39 +20,37 @@ typedef wxThread SpringProcessBase;
 #include <wx/process.h>
 
 BEGIN_DECLARE_EVENT_TYPES()
-DECLARE_LOCAL_EVENT_TYPE( wxEVT_SPRING_EXIT, 1 )
+DECLARE_LOCAL_EVENT_TYPE(wxEVT_SPRING_EXIT, 1)
 END_DECLARE_EVENT_TYPES()
 
 class Spring;
 
-class SpringProcess: public SpringProcessBase
-{
-  public:
-    SpringProcess( Spring& sp );
-    ~SpringProcess();
+class SpringProcess : public SpringProcessBase {
+public:
+  SpringProcess(Spring& sp);
+  ~SpringProcess();
 
-    void OnExit();
+  void OnExit();
 
-    void SetCommand( const wxString& cmd );
+  void SetCommand(const wxString& cmd);
 
-    void* Entry();
+  void* Entry();
 
-  protected:
-    Spring& m_sp;
-    wxString m_cmd;
-    int m_exit_code;
+protected:
+  Spring& m_sp;
+  wxString m_cmd;
+  int m_exit_code;
 };
 
-class wxSpringProcess: public wxProcess
-{
-  public:
-    wxSpringProcess( Spring& sp );
-    ~wxSpringProcess();
+class wxSpringProcess : public wxProcess {
+public:
+  wxSpringProcess(Spring& sp);
+  ~wxSpringProcess();
 
-    void OnTerminate( int pid, int status );
+  void OnTerminate(int pid, int status);
 
-  protected:
-    Spring& m_sp;
+protected:
+  Spring& m_sp;
 };
 
 const int PROC_SPRING = wxID_HIGHEST;
@@ -78,4 +73,3 @@ const int PROC_SPRING = wxID_HIGHEST;
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

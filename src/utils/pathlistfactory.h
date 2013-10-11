@@ -4,13 +4,12 @@
 class wxString;
 class wxPathList;
 
-class PathlistFactory
-{
+class PathlistFactory {
 public:
-    static wxPathList fromSinglePath( wxString path );
-    static wxPathList ConfigFileSearchPaths();
-    static wxPathList UikeysLocations();
-    static wxPathList AdditionalSearchPaths( wxPathList& pl );
+  static wxPathList fromSinglePath(wxString path);
+  static wxPathList ConfigFileSearchPaths();
+  static wxPathList UikeysLocations();
+  static wxPathList AdditionalSearchPaths(wxPathList& pl);
 };
 
 #endif // SPRINGLOBBY_PATHLISTFACTORY_H
@@ -31,5 +30,3 @@ public:
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-
-

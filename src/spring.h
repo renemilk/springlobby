@@ -13,7 +13,6 @@ lsl/spring/spring.h
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 **/
 
-
 #include <wx/event.h>
 
 class wxCommandEvent;
@@ -25,36 +24,33 @@ class SpringProcess;
 class wxSpringProcess;
 class wxString;
 
+class Spring : public wxEvtHandler {
+public:
+  explicit Spring();
+  ~Spring();
 
-class Spring:
-		public wxEvtHandler
-{
-  public:
-	explicit Spring();
-    ~Spring();
+  bool IsRunning() const;
+  bool Run(Battle& battle);
+  bool Run(SinglePlayerBattle& battle);
+  bool Run(OfflineBattle& battle);
 
-    bool IsRunning() const;
-    bool Run( Battle& battle );
-    bool Run( SinglePlayerBattle& battle );
-    bool Run( OfflineBattle& battle );
+  //! executes spring with replay as parameter
+  /*!
+   * \param filename the full path for the replayfile
+   */
+  bool RunReplay(const wxString& filename);
 
-    //! executes spring with replay as parameter
-    /*!
-     * \param filename the full path for the replayfile
-     */
-    bool RunReplay ( const wxString& filename );
+  wxString WriteScriptTxt(IBattle& battle) const;
+  void OnTerminated(wxCommandEvent& event);
 
-    wxString WriteScriptTxt( IBattle& battle ) const;
-    void OnTerminated( wxCommandEvent& event );
+protected:
+  bool LaunchSpring(const wxString& params);
 
-  protected:
-		bool LaunchSpring( const wxString& params );
+  SpringProcess* m_process;
+  wxSpringProcess* m_wx_process;
+  bool m_running;
 
-    SpringProcess* m_process;
-    wxSpringProcess* m_wx_process;
-    bool m_running;
-
-    DECLARE_EVENT_TABLE()
+  DECLARE_EVENT_TABLE()
 };
 
 Spring& spring();
@@ -77,4 +73,3 @@ Spring& spring();
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

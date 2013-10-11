@@ -8,37 +8,33 @@ class wxTimerEvent;
 class UpdaterMainwindow;
 
 //! @brief SpringLobby wxApp
-class UpdaterApp : public wxApp
-{
-  public:
-    UpdaterApp();
-    ~UpdaterApp();
+class UpdaterApp : public wxApp {
+public:
+  UpdaterApp();
+  ~UpdaterApp();
 
-    virtual bool OnInit();
-    virtual int OnExit();
+  virtual bool OnInit();
+  virtual int OnExit();
 
-    virtual void OnFatalException();
+  virtual void OnFatalException();
 
-    // System Events
-    void OnTimer( wxTimerEvent& event );
+  // System Events
+  void OnTimer(wxTimerEvent& event);
 
-    virtual void OnInitCmdLine(wxCmdLineParser& parser);
-    virtual bool OnCmdLineParsed(wxCmdLineParser& parser);
+  virtual void OnInitCmdLine(wxCmdLineParser& parser);
+  virtual bool OnCmdLineParsed(wxCmdLineParser& parser);
 
+protected:
+  wxTimer* m_timer;
+  wxString m_exe_to_update;
+  wxString m_version;
 
-  protected:
-
-    wxTimer* m_timer;
-	wxString m_exe_to_update;
-	wxString m_version;
-
-    UpdaterMainwindow* m_updater_window;
+  UpdaterMainwindow* m_updater_window;
 
 private:
-	std::ofstream* m_logstream_target;
+  std::ofstream* m_logstream_target;
 
-
-    DECLARE_EVENT_TABLE()
+  DECLARE_EVENT_TABLE()
 };
 
 DECLARE_APP(UpdaterApp)
@@ -61,4 +57,3 @@ DECLARE_APP(UpdaterApp)
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

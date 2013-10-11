@@ -18,11 +18,10 @@ double LevenshteinDistance(wxString s, wxString t);
  * @brief Gets the closest match for s in a, using LevenshteinDistance.
  * @param distance If not NULL, *distance is set to the edit distance from s to the return value.
  */
-wxString GetBestMatch(const wxArrayString& a, const wxString& s, double* distance = 0 );
-std::string GetBestMatch(const std::vector<std::string>& a, const std::string& s, double* distance = 0 );
+wxString GetBestMatch(const wxArrayString& a, const wxString& s, double* distance = 0);
+std::string GetBestMatch(const std::vector<std::string>& a, const std::string& s, double* distance = 0);
 
-wxString Paste2Pastebin( const wxString& message );
-
+wxString Paste2Pastebin(const wxString& message);
 
 /** Try to create the named directory, if it doesn't exist.
  *
@@ -35,7 +34,7 @@ wxString Paste2Pastebin( const wxString& message );
  * @return @c true if the directory already exists, or the return
  * value of wxFileName::Mkdir if it does not.
  */
-bool tryCreateDirectory( const wxString& name, int perm = 0775, int flags = 0 );
+bool tryCreateDirectory(const wxString& name, int perm = 0775, int flags = 0);
 
 #endif // SPRINGLOBBY_HEADERGUARD_MISC_H
 

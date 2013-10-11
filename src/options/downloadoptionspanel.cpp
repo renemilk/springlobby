@@ -1,6 +1,6 @@
 #ifdef _MSC_VER
 #ifndef NOMINMAX
-    #define NOMINMAX
+#define NOMINMAX
 #endif // NOMINMAX
 #include <winsock2.h>
 #endif // _MSC_VER
@@ -22,47 +22,39 @@
 #include "utils/conversion.h"
 #include "utils/controls.h"
 
-
-BEGIN_EVENT_TABLE( TorrentOptionsPanel, wxScrolledWindow )
+BEGIN_EVENT_TABLE(TorrentOptionsPanel, wxScrolledWindow)
 END_EVENT_TABLE()
 
-TorrentOptionsPanel::TorrentOptionsPanel( wxWindow* parent )
-    : wxScrolledWindow( parent, -1)
-{
-    GetAui().manager->AddPane( this, wxLEFT, _T("torrentoptionspanel") );
+TorrentOptionsPanel::TorrentOptionsPanel(wxWindow* parent) : wxScrolledWindow(parent, -1) {
+  GetAui().manager->AddPane(this, wxLEFT, _T("torrentoptionspanel"));
 
-    wxBoxSizer* mainboxsizer = new wxBoxSizer( wxVERTICAL );
-    m_parallel_http = new wxSpinCtrl(this , wxID_ANY, wxString::Format(_T("%d"),sett().GetHTTPMaxParallelDownloads()) );
-    m_parallel_http->SetRange(1,10);
-    m_parallel_http_sizer = new wxStaticBoxSizer( wxHORIZONTAL , this,_("Parallel HTTP Connections when downloading content"));
-    m_parallel_http_sizer->Add(m_parallel_http);
-    
+  wxBoxSizer* mainboxsizer = new wxBoxSizer(wxVERTICAL);
+  m_parallel_http = new wxSpinCtrl(this, wxID_ANY, wxString::Format(_T("%d"), sett().GetHTTPMaxParallelDownloads()));
+  m_parallel_http->SetRange(1, 10);
+  m_parallel_http_sizer =
+      new wxStaticBoxSizer(wxHORIZONTAL, this, _("Parallel HTTP Connections when downloading content"));
+  m_parallel_http_sizer->Add(m_parallel_http);
 
-    mainboxsizer->Add( m_parallel_http_sizer, 0, wxALL, 5 );
+  mainboxsizer->Add(m_parallel_http_sizer, 0, wxALL, 5);
 
-    //the lazy man's solution to options not being set correctly at panel creation
-    wxCommandEvent dummy;
-    OnRestore( dummy );
+  // the lazy man's solution to options not being set correctly at panel creation
+  wxCommandEvent dummy;
+  OnRestore(dummy);
 
-    SetSizer( mainboxsizer );
-    SetScrollRate( SCROLL_RATE, SCROLL_RATE );
-    Layout();
+  SetSizer(mainboxsizer);
+  SetScrollRate(SCROLL_RATE, SCROLL_RATE);
+  Layout();
 }
 
-TorrentOptionsPanel::~TorrentOptionsPanel()
-{
+TorrentOptionsPanel::~TorrentOptionsPanel() {}
 
+void TorrentOptionsPanel::OnApply(wxCommandEvent& /*unused*/) {
+
+  sett().SetHTTPMaxParallelDownloads(m_parallel_http->GetValue());
+
+  prDownloader().UpdateSettings();
 }
 
-void TorrentOptionsPanel::OnApply( wxCommandEvent& /*unused*/ )
-{
-
-    sett().SetHTTPMaxParallelDownloads(m_parallel_http->GetValue());
-
-	prDownloader().UpdateSettings();
-}
-
-void TorrentOptionsPanel::OnRestore( wxCommandEvent& /*unused*/ )
-{
-    m_parallel_http->SetValue( sett().GetHTTPMaxParallelDownloads());
+void TorrentOptionsPanel::OnRestore(wxCommandEvent& /*unused*/) {
+  m_parallel_http->SetValue(sett().GetHTTPMaxParallelDownloads());
 }

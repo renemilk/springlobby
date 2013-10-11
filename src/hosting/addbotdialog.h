@@ -18,73 +18,66 @@ class wxListEvent;
 
 /** \brief used in SP/MP BattletAB to present choice of AIs to add
  * \todo DOCMEMORE */
-class AddBotDialog : public wxDialog, public WindowAttributesPickle
-{
-  public:
+class AddBotDialog : public wxDialog, public WindowAttributesPickle {
+public:
+  AddBotDialog(wxWindow* parent, IBattle& battle, bool singleplayer = false);
+  ~AddBotDialog();
 
-    AddBotDialog( wxWindow* parent, IBattle& battle, bool singleplayer = false );
-    ~AddBotDialog( );
+  wxString GetNick();
+  wxString GetAIShortName();
+  wxString GetAiRawName();
+  wxString GetAIVersion();
+  int GetAIType();
 
-    wxString GetNick();
-    wxString GetAIShortName();
-    wxString GetAiRawName();
-    wxString GetAIVersion();
-    int GetAIType();
+  void ReloadAIList();
+  void ShowAIInfo();
 
-    void ReloadAIList();
-    void ShowAIInfo();
+  void OnClose(wxCommandEvent& event);
+  void OnAddBot(wxCommandEvent& event);
+  void OnSelectBot(wxCommandEvent& event);
 
-    void OnClose( wxCommandEvent& event );
-    void OnAddBot( wxCommandEvent& event );
-    void OnSelectBot( wxCommandEvent& event );
+  void OnOptionActivate(wxListEvent& event);
+  void UpdateOption(const wxString& Tag);
+  long AddMMOptionsToList(long pos, int optFlag);
+  void ShowAIOptions();
 
-    void OnOptionActivate( wxListEvent& event );
-    void UpdateOption( const wxString& Tag );
-    long AddMMOptionsToList( long pos, int optFlag );
-    void ShowAIOptions();
+protected:
+  wxString Get(const std::string& section);
+  AddBotDialog(const AddBotDialog&);
 
+  wxStaticText* m_nick_lbl;
+  wxTextCtrl* m_nick;
+  wxStaticText* m_ai_lbl;
+  wxChoice* m_ai;
+  wxStaticLine* m_buttons_sep;
+  wxButton* m_cancel_btn;
+  wxButton* m_add_btn;
+  wxListCtrl* m_ai_infos_lst;
+  wxListCtrl* m_opts_list;
 
-  protected:
-    wxString Get(const std::string& section);
-    AddBotDialog( const AddBotDialog& );
+  typedef std::map<wxString, long> OptionListMap;
+  OptionListMap m_opt_list_map;
 
-    wxStaticText* m_nick_lbl;
-    wxTextCtrl* m_nick;
-    wxStaticText* m_ai_lbl;
-    wxChoice* m_ai;
-    wxStaticLine* m_buttons_sep;
-    wxButton* m_cancel_btn;
-    wxButton* m_add_btn;
-    wxListCtrl* m_ai_infos_lst;
-    wxListCtrl* m_opts_list;
+  wxBoxSizer* m_main_sizer;
+  wxBoxSizer* m_info_sizer;
 
-    typedef std::map<wxString, long> OptionListMap;
-		OptionListMap m_opt_list_map;
+  IBattle& m_battle;
 
-    wxBoxSizer* m_main_sizer;
-    wxBoxSizer* m_info_sizer;
+  wxArrayString m_ais;
 
+  bool m_sp;
 
-    IBattle& m_battle;
+  wxString RefineAIName(const wxString& name);
 
-    wxArrayString m_ais;
+  enum {
+    ADDBOT_ADD = wxID_HIGHEST,
+    ADDBOT_CANCEL,
+    ADDBOT_AI,
+    ADDBOT_OPTIONLIST
+  };
 
-    bool m_sp;
-
-    wxString RefineAIName( const wxString& name );
-
-    enum
-    {
-      ADDBOT_ADD = wxID_HIGHEST,
-      ADDBOT_CANCEL,
-      ADDBOT_AI,
-	  ADDBOT_OPTIONLIST
-    };
-
-    DECLARE_EVENT_TABLE()
+  DECLARE_EVENT_TABLE()
 };
-
-
 
 #endif // SPRINGLOBBY_HEADERGUARD_ADDBOTDIALOG_H
 
@@ -104,4 +97,3 @@ class AddBotDialog : public wxDialog, public WindowAttributesPickle
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

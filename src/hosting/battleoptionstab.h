@@ -17,72 +17,64 @@ class wxCheckListBox;
 
 /** \brief manipulate "standard" engine options, unit restriction list
  * \todo DOCMEMORE */
-class BattleOptionsTab : public wxScrolledWindow
-{
-  public:
-    BattleOptionsTab( wxWindow* parent, IBattle* battle );
-    ~BattleOptionsTab();
+class BattleOptionsTab : public wxScrolledWindow {
+public:
+  BattleOptionsTab(wxWindow* parent, IBattle* battle);
+  ~BattleOptionsTab();
 
-    void UpdateBattle( const wxString& Tag );
-    void ReloadRestrictions();
+  void UpdateBattle(const wxString& Tag);
+  void ReloadRestrictions();
 
-    int GetAllowedUnitIndex( const wxString& name );
-    int GetRestrictedUnitIndex( const wxString& name );
-    bool IsRestricted( const wxString& name );
-    void Restrict( const wxString& name, int count );
-    void Allow( const wxString& name );
-    void Restrict( int index, int count );
-    void Allow( int index );
+  int GetAllowedUnitIndex(const wxString& name);
+  int GetRestrictedUnitIndex(const wxString& name);
+  bool IsRestricted(const wxString& name);
+  void Restrict(const wxString& name, int count);
+  void Allow(const wxString& name);
+  void Restrict(int index, int count);
+  void Allow(int index);
 
+  void OnRestrict(wxCommandEvent& event);
+  void OnAllow(wxCommandEvent& event);
+  void OnClearRestrictions(wxCommandEvent& event);
 
-    void OnRestrict( wxCommandEvent& event );
-    void OnAllow( wxCommandEvent& event );
-    void OnClearRestrictions( wxCommandEvent& event );
+  void SetBattle(IBattle* battle);
+  IBattle* GetBattle();
 
-    void SetBattle( IBattle* battle );
-    IBattle* GetBattle();
+protected:
+  void UpdateBattle();
 
-  protected:
+  IBattle* m_battle;
 
-    void UpdateBattle();
+  wxStaticText* m_aloowed_lbl;
+  wxListBox* m_allowed_list;
+  wxButton* m_restrict_btn;
+  wxButton* m_allow_btn;
+  wxStaticText* m_restricted_lbl;
+  wxListBox* m_restrict_list;
+  wxButton* m_clear_btn;
 
-    IBattle* m_battle;
+  enum {
+    BOPTS_END = wxID_HIGHEST,
+    BOPTS_OPTS,
+    BOPTS_SLIDE,
+    BOPTS_RESTRICT,
+    BOPTS_ALLOW,
+    BOPTS_CLEARRES,
+    BOPTS_LOADPRES,
+    BOPTS_SAVEPRES,
+    BOPTS_DELETEPRES,
+    BOPTS_SETDEFAULTPRES,
+    BOPTS_CHOSEPRES
+  };
 
-    wxStaticText* m_aloowed_lbl;
-    wxListBox* m_allowed_list;
-    wxButton* m_restrict_btn;
-    wxButton* m_allow_btn;
-    wxStaticText* m_restricted_lbl;
-    wxListBox* m_restrict_list;
-    wxButton* m_clear_btn;
-
-    enum {
-      BOPTS_END = wxID_HIGHEST,
-      BOPTS_OPTS,
-      BOPTS_SLIDE,
-
-      BOPTS_RESTRICT,
-      BOPTS_ALLOW,
-      BOPTS_CLEARRES,
-
-      BOPTS_LOADPRES,
-      BOPTS_SAVEPRES,
-      BOPTS_DELETEPRES,
-      BOPTS_SETDEFAULTPRES,
-      BOPTS_CHOSEPRES
-    };
-
-    DECLARE_EVENT_TABLE()
+  DECLARE_EVENT_TABLE()
 };
 
-
-enum
-{
+enum {
   BOPTS_RESTRICT = wxID_HIGHEST,
   BOPTS_ALLOW,
   BOPTS_CLEARRES
 };
-
 
 #endif // SPRINGLOBBY_HEADERGUARD_BATTLEOPTIONSTAB_H
 
@@ -102,4 +94,3 @@ enum
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

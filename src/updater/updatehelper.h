@@ -3,8 +3,8 @@
 
 class wxString;
 
-wxString GetDownloadUrl( const wxString& version );
-wxString GetSpringLobbyVersion( bool consider_aux = true );
+wxString GetDownloadUrl(const wxString& version);
+wxString GetSpringLobbyVersion(bool consider_aux = true);
 wxString GetSpringLobbyAuxVersion();
 
 #endif

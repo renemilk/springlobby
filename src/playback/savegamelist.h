@@ -8,23 +8,21 @@ struct Savegame;
 template <class PB, class T>
 class GlobalObjectHolder;
 
-class SavegameList : public PlaybackList<Savegame>
-{
-  public:
+class SavegameList : public PlaybackList<Savegame> {
+public:
+  typedef Savegame PlaybackType;
 
-    typedef Savegame
-        PlaybackType;
+  virtual void LoadPlaybacks(const std::vector<std::string>& filenames);
 
-   virtual  void LoadPlaybacks( const std::vector<std::string>& filenames );
+protected:
+  SavegameList();
 
-  protected:
-    SavegameList();
+  template <class PB, class I>
+  friend class LSL::Util::GlobalObjectHolder;
 
-    template <class PB, class I >
-    friend class LSL::Util::GlobalObjectHolder;
 private:
-	bool GetSavegameInfos ( const wxString& SavegamePath, Savegame& ret ) const;
-	wxString GetScriptFromSavegame ( const wxString& SavegamePath ) const;
+  bool GetSavegameInfos(const wxString& SavegamePath, Savegame& ret) const;
+  wxString GetScriptFromSavegame(const wxString& SavegamePath) const;
 };
 
 #endif // SAVEGAMELIST_H

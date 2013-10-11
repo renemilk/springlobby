@@ -11,40 +11,39 @@
 
 //! single global instance to get all customizsations from
 class Customizations {
-    protected:
-        Customizations();
+protected:
+  Customizations();
 
-        wxString m_modname;
-        LSL::OptionsWrapper m_customs;
-        wxIconBundle m_app_icons;
-        wxString m_help_url;
-        wxString m_archive;
-        bool m_active;
+  wxString m_modname;
+  LSL::OptionsWrapper m_customs;
+  wxIconBundle m_app_icons;
+  wxString m_help_url;
+  wxString m_archive;
+  bool m_active;
 
-		bool KeyExists( const wxString& key ) const;
-        bool Provides( const wxString& key ) const;
+  bool KeyExists(const wxString& key) const;
+  bool Provides(const wxString& key) const;
 
-    public:
-        ~Customizations() {}
+public:
+  ~Customizations() {}
 
-        bool Init( const wxString& );
-		bool Active() const;
+  bool Init(const wxString&);
+  bool Active() const;
 
-        const wxString& GetModname() const;
-        const wxString& GetHelpUrl() const;
-        const wxString& Archive() const;
-        const wxIconBundle& GetAppIconBundle() const;
+  const wxString& GetModname() const;
+  const wxString& GetHelpUrl() const;
+  const wxString& Archive() const;
+  const wxIconBundle& GetAppIconBundle() const;
 
-        const LSL::OptionsWrapper& GetCustomizations() const;
+  const LSL::OptionsWrapper& GetCustomizations() const;
 
-		wxString GetIntroText() const;
+  wxString GetIntroText() const;
 
-		//! if key is found bitmap is changed and true returned
-		bool GetBitmap( const wxString& key, wxBitmap& bitmap );
+  //! if key is found bitmap is changed and true returned
+  bool GetBitmap(const wxString& key, wxBitmap& bitmap);
 
-		static const wxString IntroKey;// ( _T("intro_file") );
-        friend class LSL::Util::GlobalObjectHolder<Customizations, LSL::Util::LineInfo<Customizations> >;
-
+  static const wxString IntroKey; // ( _T("intro_file") );
+  friend class LSL::Util::GlobalObjectHolder<Customizations, LSL::Util::LineInfo<Customizations>>;
 };
 
 Customizations& SLcustomizations();

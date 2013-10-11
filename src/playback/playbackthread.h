@@ -8,51 +8,41 @@
 
 static const wxEventType PlaybacksLoadedEvt = wxNewEventType();
 
-
-template <class PlaybackTabImp >
-class PlaybackLoader : public wxEvtHandler
-{
+template <class PlaybackTabImp>
+class PlaybackLoader : public wxEvtHandler {
 protected:
-    class PlaybackLoaderThread : public wxThread
-    {
-        protected:
-            typedef PlaybackLoader<PlaybackTabImp>
-                ParentType;
+  class PlaybackLoaderThread : public wxThread {
+  protected:
+    typedef PlaybackLoader<PlaybackTabImp> ParentType;
 
-        public:
-            PlaybackLoaderThread();
-            void SetParent( ParentType* parent );
-            void* Entry();
+  public:
+    PlaybackLoaderThread();
+    void SetParent(ParentType* parent);
+    void* Entry();
 
-        protected:
-            ParentType* m_parent;
-    };
+  protected:
+    ParentType* m_parent;
+  };
 
 public:
-    typedef PlaybackTabImp
-        ParentType;
-    typedef typename ParentType::PlaybackType
-        PlaybackType;
-    typedef typename ParentType::ListType
-        ListType;
-    typedef PlaybackLoader<PlaybackTabImp>
-        ThisType;
-    typedef PlaybackLoaderThread
-        ThreadType;
+  typedef PlaybackTabImp ParentType;
+  typedef typename ParentType::PlaybackType PlaybackType;
+  typedef typename ParentType::ListType ListType;
+  typedef PlaybackLoader<PlaybackTabImp> ThisType;
+  typedef PlaybackLoaderThread ThreadType;
 
-    static const bool IsReplayType = ParentType::IsReplayType;
+  static const bool IsReplayType = ParentType::IsReplayType;
 
-    PlaybackLoader( ParentType* parent );
-    ~PlaybackLoader();
-    void OnComplete();
-    void Run();
-    std::vector<std::string> GetPlaybackFilenames();
+  PlaybackLoader(ParentType* parent);
+  ~PlaybackLoader();
+  void OnComplete();
+  void Run();
+  std::vector<std::string> GetPlaybackFilenames();
 
 protected:
-    std::vector<std::string> m_filenames;
-    ParentType* m_parent;
-    ThreadType* m_thread_loader;
-
+  std::vector<std::string> m_filenames;
+  ParentType* m_parent;
+  ThreadType* m_thread_loader;
 };
 
 #include "playbackthread.cpp"
@@ -74,4 +64,3 @@ protected:
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

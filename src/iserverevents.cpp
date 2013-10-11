@@ -13,11 +13,10 @@ lsl/networking/iserver.cpp
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 **/
 
-
-IServerEvents* IServerEvents::getInstance( Server& server, ServerEventsMode mode  )
-{
-	switch (mode) {
-		default: return new ServerEvents( server );
-	}
-	return NULL;
+IServerEvents* IServerEvents::getInstance(Server& server, ServerEventsMode mode) {
+  switch (mode) {
+    default:
+      return new ServerEvents(server);
+  }
+  return NULL;
 }

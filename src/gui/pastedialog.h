@@ -15,7 +15,6 @@
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-
 #ifndef PASTEDIALOG_H
 #define PASTEDIALOG_H
 
@@ -23,22 +22,20 @@
 
 /** \brief let the user decide to pastebin a message
  */
-class PasteDialog : public wxDialog
-{
+class PasteDialog : public wxDialog {
 public:
-	PasteDialog( wxWindow *parent, const wxString& message );
-	virtual ~PasteDialog();
+  PasteDialog(wxWindow* parent, const wxString& message);
+  virtual ~PasteDialog();
 
-	static const int pasteButtonReturnCode = wxID_HIGHEST + 1;
+  static const int pasteButtonReturnCode = wxID_HIGHEST + 1;
 
 protected:
-	enum {
-		ID_PASTE_BUTTON = wxID_HIGHEST
-	};
-	void OnPasteButton( wxCommandEvent& evt );
-	void OnOptionsNo(wxCommandEvent& event);
-	DECLARE_EVENT_TABLE()
-
+  enum {
+    ID_PASTE_BUTTON = wxID_HIGHEST
+  };
+  void OnPasteButton(wxCommandEvent& evt);
+  void OnOptionsNo(wxCommandEvent& event);
+  DECLARE_EVENT_TABLE()
 };
 
 #endif // PASTEDIALOG_H

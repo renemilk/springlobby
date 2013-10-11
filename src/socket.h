@@ -1,7 +1,6 @@
 #ifndef SPRINGLOBBY_HEADERGUARD_SOCKET_H
 #define SPRINGLOBBY_HEADERGUARD_SOCKET_H
 
-
 /**
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -14,7 +13,6 @@ lsl/networking/socket.h
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 **/
 
-
 #include <wx/string.h>
 
 #include <wx/event.h>
@@ -23,15 +21,13 @@ class iNetClass;
 class wxCriticalSection;
 class PingThread;
 
-enum SockState
-{
+enum SockState {
   SS_Closed,
   SS_Connecting,
   SS_Open
 };
 
-enum SockError
-{
+enum SockError {
   SE_No_Error,
   SE_NotConnected,
   SE_Resolve_Host_Failed,
@@ -40,74 +36,72 @@ enum SockError
 
 const int SOCKET_ID = 100;
 
-
 class SocketEvents;
 class wxSocketEvent;
 class wxSocketClient;
 
 //! @brief Class that implements a TCP client socket.
-class Socket
-{
-  public:
+class Socket {
+public:
+  Socket(iNetClass& netclass, bool wait_on_connect = false, bool blocking = false);
+  ~Socket();
 
-    Socket( iNetClass& netclass, bool wait_on_connect = false, bool blocking = false );
-    ~Socket();
+  // Socket interface
 
-    // Socket interface
+  void Connect(const wxString& addr, const int port);
+  void Disconnect();
 
-    void Connect( const wxString& addr, const int port );
-    void Disconnect( );
+  bool Send(const wxString& data);
+  wxString Receive();
+  //! used in plasmaservice, otherwise getting garbeld responses
+  wxString ReceiveSpecial();
 
-    bool Send( const wxString& data );
-    wxString Receive();
-    //! used in plasmaservice, otherwise getting garbeld responses
-    wxString ReceiveSpecial();
+  wxString GetLocalAddress() const;
+  wxString GetHandle() const { return m_handle; }
 
-    wxString GetLocalAddress() const;
-    wxString GetHandle() const {return m_handle;}
+  SockState State();
+  SockError Error() const;
 
-    SockState State( );
-    SockError Error( ) const;
+  void SetSendRateLimit(int Bps = -1);
+  int GetSendRateLimit() { return m_rate; }
+  void OnTimer(int mselapsed);
 
-    void SetSendRateLimit( int Bps = -1 );
-    int GetSendRateLimit() {return m_rate;}
-    void OnTimer( int mselapsed );
+  void SetTimeout(const int seconds);
 
-    void SetTimeout( const int seconds );
-
-    protected:
-
+protected:
   // Socket variables
 
-    wxSocketClient* m_sock;
-    SocketEvents* m_events;
+  wxSocketClient* m_sock;
+  SocketEvents* m_events;
 
-    wxCriticalSection m_lock;
+  wxCriticalSection m_lock;
 
-    wxString m_ping_msg,m_handle;
+  wxString m_ping_msg, m_handle;
 
-    bool m_connecting;
-    bool m_wait_on_connect;
-    bool m_blocking;
-    iNetClass& m_net_class;
+  bool m_connecting;
+  bool m_wait_on_connect;
+  bool m_blocking;
+  iNetClass& m_net_class;
 
-    unsigned int m_udp_private_port;
-    int m_rate;
-    int m_sent;
-    std::string m_buffer;
+  unsigned int m_udp_private_port;
+  int m_rate;
+  int m_sent;
+  std::string m_buffer;
 
-    wxSocketClient* _CreateSocket();
+  wxSocketClient* _CreateSocket();
 
-    bool _Send( const wxString& data );
+  bool _Send(const wxString& data);
 };
 
-class SocketEvents: public wxEvtHandler
-{
-  public:
-    SocketEvents( iNetClass& netclass ): wxEvtHandler(), m_net_class(netclass) {}
-    void OnSocketEvent(wxSocketEvent& event);
-  protected:
-    iNetClass& m_net_class;
+class SocketEvents : public wxEvtHandler {
+public:
+  SocketEvents(iNetClass& netclass)
+    : wxEvtHandler()
+    , m_net_class(netclass) {}
+  void OnSocketEvent(wxSocketEvent& event);
+
+protected:
+  iNetClass& m_net_class;
   DECLARE_EVENT_TABLE()
 };
 
@@ -131,4 +125,3 @@ typedef void (*socket_callback)(Socket*);
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

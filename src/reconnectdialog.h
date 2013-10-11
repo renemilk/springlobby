@@ -7,24 +7,22 @@
 
 class wxCommandEvent;
 
-class ReconnectDialog : public wxDialog, public GlobalEvent, public WindowAttributesPickle
-{
+class ReconnectDialog : public wxDialog, public GlobalEvent, public WindowAttributesPickle {
 public:
-    ReconnectDialog();
-    void OnQuit( wxCommandEvent& data );
+  ReconnectDialog();
+  void OnQuit(wxCommandEvent& data);
 
 private:
-	void OnReconnect ( wxCommandEvent& event );
-	void OnCancel ( wxCommandEvent& event );
-	void OnTryNext ( wxCommandEvent& event );
-	enum
-	{
-		CONNECT_RECONNECT = wxID_HIGHEST,
-		CONNECT_NEXT,
-		CONNECT_CANCEL
-	};
+  void OnReconnect(wxCommandEvent& event);
+  void OnCancel(wxCommandEvent& event);
+  void OnTryNext(wxCommandEvent& event);
+  enum {
+    CONNECT_RECONNECT = wxID_HIGHEST,
+    CONNECT_NEXT,
+    CONNECT_CANCEL
+  };
 
-	DECLARE_EVENT_TABLE()
+  DECLARE_EVENT_TABLE()
 };
 
 #endif // RECONNECTDIALOG_H

@@ -3,7 +3,7 @@
 #ifndef SPRINGLOBBY_HEADERGUARD_AUTOHOST_H
 #define SPRINGLOBBY_HEADERGUARD_AUTOHOST_H
 
-//including this header is only really needed for time_t ..
+// including this header is only really needed for time_t ..
 #include <wx/string.h>
 #include <wx/arrstr.h>
 
@@ -12,27 +12,25 @@ class User;
 class wxString;
 
 //! @brief Autohost logic
-class AutoHost
-{
-  public:
+class AutoHost {
+public:
+  AutoHost(Battle& battle);
 
-    AutoHost( Battle& battle );
+  void SetEnabled(const bool enabled);
+  bool GetEnabled() const;
 
-    void SetEnabled( const bool enabled );
-    bool GetEnabled() const;
+  void OnSaidBattle(const wxString& nick, const wxString& msg);
+  void OnUserAdded(User& user);
+  void OnUserRemoved(User& user);
 
-    void OnSaidBattle( const wxString& nick, const wxString& msg );
-    void OnUserAdded( User& user );
-    void OnUserRemoved( User& user );
-  private:
+private:
+  void StartBattle();
 
-    void StartBattle();
+  Battle& m_battle;
 
-    Battle& m_battle;
-
-    bool m_enabled;
-    time_t m_lastActionTime;
-    wxArrayString m_userlist;
+  bool m_enabled;
+  time_t m_lastActionTime;
+  wxArrayString m_userlist;
 };
 
 #endif // SPRINGLOBBY_HEADERGUARD_AUTOHOST_H
@@ -53,4 +51,3 @@ class AutoHost
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

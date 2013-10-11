@@ -11,20 +11,19 @@ class wxWindow;
  * Passwords for existing channels aren't displayed. The dialog expects a [chanName|password] pair per line.
  * \todo See that parsing input doesn't crap out when user enters rubbish
  */
-class AutojoinChannelDialog : public wxDialog
-{
-	public:
-		/** Default constructor */
-		AutojoinChannelDialog( wxWindow* parent );
-		/** Default destructor */
-		virtual ~AutojoinChannelDialog();
-	protected:
+class AutojoinChannelDialog : public wxDialog {
+public:
+  /** Default constructor */
+  AutojoinChannelDialog(wxWindow* parent);
+  /** Default destructor */
+  virtual ~AutojoinChannelDialog();
 
-		wxTextCtrl* m_channel_list;
+protected:
+  wxTextCtrl* m_channel_list;
 
-		void OnOk( wxCommandEvent& event );
-		void OnCancel( wxCommandEvent& event );
-		DECLARE_EVENT_TABLE()
+  void OnOk(wxCommandEvent& event);
+  void OnCancel(wxCommandEvent& event);
+  DECLARE_EVENT_TABLE()
 };
 
 #endif // AUTOJOINCHANNELDIALOG_H
@@ -45,4 +44,3 @@ class AutojoinChannelDialog : public wxDialog
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

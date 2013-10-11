@@ -4,30 +4,26 @@
 class Socket;
 
 //! @brief Abstract baseclass that is used when needed to interface with socket class
-class iNetClass
-{
-  public:
+class iNetClass {
+public:
+  iNetClass() {}
+  virtual ~iNetClass() {}
 
-    iNetClass(){}
-    virtual ~iNetClass(){}
-
-    virtual void OnConnected( Socket* sock ) = 0;
-    virtual void OnDisconnected( Socket* sock ) = 0;
-    virtual void OnDataReceived( Socket* sock ) = 0;
-	virtual void Ping() = 0;
+  virtual void OnConnected(Socket* sock) = 0;
+  virtual void OnDisconnected(Socket* sock) = 0;
+  virtual void OnDataReceived(Socket* sock) = 0;
+  virtual void Ping() = 0;
 };
 
-class FakeNetClass : public iNetClass
-{
-  public:
+class FakeNetClass : public iNetClass {
+public:
+  FakeNetClass() {}
+  ~FakeNetClass() {}
 
-    FakeNetClass(){}
-    ~FakeNetClass(){}
-
-    void OnConnected( Socket* /*unused*/ ) {}
-    void OnDisconnected( Socket* /*unused*/ ) {}
-    void OnDataReceived( Socket* /*unused*/ ) {}
-	void Ping() {}
+  void OnConnected(Socket* /*unused*/) {}
+  void OnDisconnected(Socket* /*unused*/) {}
+  void OnDataReceived(Socket* /*unused*/) {}
+  void Ping() {}
 };
 
 #endif // SPRINGLOBBY_HEADERGUARD_INETCLASS_H
@@ -48,4 +44,3 @@ class FakeNetClass : public iNetClass
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

@@ -5,92 +5,86 @@
 #include <exception>
 class Battle;
 
+class AutohostHandler {
+public:
+  AutohostHandler();
+  virtual ~AutohostHandler();
 
-class AutohostHandler
-{
-    public:
-        AutohostHandler();
-        virtual ~AutohostHandler();
+  virtual void Balance() {};
+  virtual void SetRandomMap() {};
+  virtual void SetMap(const wxString& /*map*/) {};
+  virtual void ClearStartBoxes() {};
+  virtual void AddStartBox(int /*posx*/, int /*posy*/, int /*w*/, int /*h*/) {};
+  virtual void Notify() {};
+  virtual void Start() {};
 
-        virtual void Balance(){};
-        virtual void SetRandomMap(){};
-        virtual void SetMap(const wxString& /*map*/){};
-        virtual void ClearStartBoxes(){};
-        virtual void AddStartBox(int /*posx*/,int /*posy*/,int /*w*/,int /*h*/){};
-        virtual void Notify(){};
-        virtual void Start(){};
-    protected:
-        Battle* m_battle;
+protected:
+  Battle* m_battle;
 
-    private:
-        void SetBattle(Battle* battle);
+private:
+  void SetBattle(Battle* battle);
 
-
-        friend class AutohostManager;
+  friend class AutohostManager;
 };
 
-class SpringieHandler: public AutohostHandler
-{
-    public:
-        SpringieHandler();
-        ~SpringieHandler();
+class SpringieHandler : public AutohostHandler {
+public:
+  SpringieHandler();
+  ~SpringieHandler();
 
-        void Balance();
-        void SetRandomMap();
-        void SetMap(const wxString& map);
-        void ClearStartBoxes();
-        void AddStartBox(int posx,int posy,int w,int h);
-        void Notify();
-	void Start();
+  void Balance();
+  void SetRandomMap();
+  void SetMap(const wxString& map);
+  void ClearStartBoxes();
+  void AddStartBox(int posx, int posy, int w, int h);
+  void Notify();
+  void Start();
 };
 
-class SpadsHandler: virtual public AutohostHandler
-{
-    public:
-        SpadsHandler();
-        ~SpadsHandler();
+class SpadsHandler : virtual public AutohostHandler {
+public:
+  SpadsHandler();
+  ~SpadsHandler();
 
-        void Balance();
-        void SetRandomMap();
-        void SetMap(const wxString& map);
-        void ClearStartBoxes();
-        void AddStartBox(int posx,int posy,int w,int h);
-        void Notify();
-        void Start();
+  void Balance();
+  void SetRandomMap();
+  void SetMap(const wxString& map);
+  void ClearStartBoxes();
+  void AddStartBox(int posx, int posy, int w, int h);
+  void Notify();
+  void Start();
 };
 
-class AutohostManager
-{
-    public:
+class AutohostManager {
+public:
+  enum AutohostType {
+    AUTOHOSTTYPE_UNKNOWN,
+    AUTOHOSTTYPE_SPRINGIE,
+    AUTOHOSTTYPE_SPADS
+  };
 
-        enum AutohostType
-        {
-            AUTOHOSTTYPE_UNKNOWN,
-            AUTOHOSTTYPE_SPRINGIE,
-            AUTOHOSTTYPE_SPADS
-        };
+  AutohostManager();
+  ~AutohostManager();
 
-        AutohostManager();
-        ~AutohostManager();
+  void SetBattle(Battle* bt);
 
-        void SetBattle(Battle* bt);
+  bool RecnognizeAutohost();
+  bool RecnognizeAutohost(const wxString& who, const wxString& message);
 
-        bool RecnognizeAutohost();
-        bool RecnognizeAutohost(const wxString& who, const wxString& message);
+  AutohostType GetAutohostType();
 
-        AutohostType GetAutohostType();
+  AutohostHandler& GetAutohostHandler();
 
-        AutohostHandler& GetAutohostHandler();
+  SpringieHandler& GetSpringie();
+  SpadsHandler& GetSpads();
 
-        SpringieHandler& GetSpringie();
-        SpadsHandler& GetSpads();
-    private:
-        SpringieHandler m_springie;
-        SpadsHandler m_spads;
-        AutohostHandler m_emptyhandler;
+private:
+  SpringieHandler m_springie;
+  SpadsHandler m_spads;
+  AutohostHandler m_emptyhandler;
 
-        AutohostType m_type;
-        Battle* m_battle;
+  AutohostType m_type;
+  Battle* m_battle;
 };
 
 #endif // AUTOHOSTMANAGER_H

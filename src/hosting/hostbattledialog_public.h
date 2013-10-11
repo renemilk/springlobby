@@ -15,14 +15,13 @@
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-
 #ifndef SPRINGLOBBY_HEADERGUARD_HOSTBATTLEDIALOG_PUBLIC_H
 #define SPRINGLOBBY_HEADERGUARD_HOSTBATTLEDIALOG_PUBLIC_H
 
 class wxWindow;
 namespace SL {
-	//! this shows an instance and handles everything wrt data feeding and input handling
-	void RunHostBattleDialog( wxWindow* parent );
+//! this shows an instance and handles everything wrt data feeding and input handling
+void RunHostBattleDialog(wxWindow* parent);
 }
 
 #endif // SPRINGLOBBY_HEADERGUARD_HOSTBATTLEDIALOG_PUBLIC_H

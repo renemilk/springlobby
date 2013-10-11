@@ -9,16 +9,16 @@ class wxCloseEvent;
 
 class UpdaterMainwindow : public wxFrame, public GlobalEvent {
 
-    public:
-        UpdaterMainwindow( const wxString& rev_string );
-        virtual ~UpdaterMainwindow();
+public:
+  UpdaterMainwindow(const wxString& rev_string);
+  virtual ~UpdaterMainwindow();
 
-        void OnClose( wxCloseEvent& evt );
+  void OnClose(wxCloseEvent& evt);
 
-        void OnUpdateFinished( wxCommandEvent& /*data*/ );
+  void OnUpdateFinished(wxCommandEvent& /*data*/);
 
-    protected:
-        DECLARE_EVENT_TABLE()
+protected:
+  DECLARE_EVENT_TABLE()
 };
 
 #endif // SPRINGLOBBY_HEADERGUARD_UPDATERMAINWINDOW_H

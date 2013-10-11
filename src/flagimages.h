@@ -4,8 +4,8 @@
 class wxImageList;
 class wxString;
 
-int GetFlagIndex( const wxString& flag );
-int AddFlagImages( wxImageList& imgs );
+int GetFlagIndex(const wxString& flag);
+int AddFlagImages(wxImageList& imgs);
 
 enum {
   FLAG_NONE = -1
@@ -29,4 +29,3 @@ enum {
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

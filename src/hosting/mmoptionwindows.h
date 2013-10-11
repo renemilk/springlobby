@@ -14,34 +14,32 @@ class wxTextCtrl;
 class wxStaticText;
 class wxButton;
 
-class SingleOptionDialog: public wxDialog
-{
+class SingleOptionDialog : public wxDialog {
 
-	public:
-			SingleOptionDialog( IBattle& battle, const wxString& optiontag );
+public:
+  SingleOptionDialog(IBattle& battle, const wxString& optiontag);
 
-			void OnOk(wxCommandEvent& event);
-			void OnCancel(wxCommandEvent& event);
+  void OnOk(wxCommandEvent& event);
+  void OnCancel(wxCommandEvent& event);
 
-			//! dummy event receiver, mandated by the control implementation
-			void OnSpinCtrlDoubleChange(SlSpinDoubleEvent& /*event*/){}
+  //! dummy event receiver, mandated by the control implementation
+  void OnSpinCtrlDoubleChange(SlSpinDoubleEvent& /*event*/) {}
 
-	protected:
-			IBattle& m_battle;
-			wxString m_tag;
+protected:
+  IBattle& m_battle;
+  wxString m_tag;
 
-			wxCheckBox* m_checkbox;
-			wxComboBox* m_combobox;
-			SlSpinCtrlDouble<SingleOptionDialog>* m_spinctrl;
-			wxTextCtrl* m_textctrl;
-			wxButton* m_cancel_button;
-			wxButton* m_ok_button;
+  wxCheckBox* m_checkbox;
+  wxComboBox* m_combobox;
+  SlSpinCtrlDouble<SingleOptionDialog>* m_spinctrl;
+  wxTextCtrl* m_textctrl;
+  wxButton* m_cancel_button;
+  wxButton* m_ok_button;
 };
 
-enum
-{
-	ID_CANCEL = wxID_HIGHEST,
-	ID_OK
+enum {
+  ID_CANCEL = wxID_HIGHEST,
+  ID_OK
 };
 
 #endif // MMOPTIONWINDOWS_H_INCLUDED
@@ -62,4 +60,3 @@ enum
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

@@ -5,15 +5,14 @@
 #include <wx/wxchar.h>
 class wxString;
 
-wxString GetWordParam( wxString& params );
-wxString GetSentenceParam( wxString& params );
-long GetIntParam( wxString& params );
-bool GetBoolParam( wxString& params );
-wxString GetParamByChar( wxString& params, const wxChar& sep );
+wxString GetWordParam(wxString& params);
+wxString GetSentenceParam(wxString& params);
+long GetIntParam(wxString& params);
+bool GetBoolParam(wxString& params);
+wxString GetParamByChar(wxString& params, const wxChar& sep);
 
 //! matches against regex for printable ascii chars, excluding space
-bool IsValidNickname( const wxString& name );
-
+bool IsValidNickname(const wxString& name);
 
 #endif // SPRINGLOBBY_HEADERGUARD_SERVERUTIL_H
 

@@ -20,7 +20,6 @@
 
 #include "tab_abstract.h"
 
-
 class wxSlider;
 class wxStaticBoxSizer;
 class wxString;
@@ -29,27 +28,28 @@ class wxPoint;
 class wxSize;
 class wxCloseEvent;
 
-class audio_panel : public abstract_panel
-{
+class audio_panel : public abstract_panel {
 
-	public:
-		audio_panel(wxWindow *parent, wxWindowID id = 1, const wxString &title = wxT("Project2"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0);
-		virtual ~audio_panel();
+public:
+  audio_panel(wxWindow* parent, wxWindowID id = 1, const wxString& title = wxT("Project2"),
+              const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0);
+  virtual ~audio_panel();
 
-		void initAudioSizer(wxStaticBoxSizer*);
-		void updateControls(int);
-    protected:
-        void OnClose(wxCloseEvent& event);
-		void CreateGUIControls();
+  void initAudioSizer(wxStaticBoxSizer*);
+  void updateControls(int);
 
-        wxSlider** ctrl_audio_sliders;
-		static const int ctrl_audio_sliders_size = 6;
+protected:
+  void OnClose(wxCloseEvent& event);
+  void CreateGUIControls();
 
-		wxSizer* parentSizer ;	// main window sizer (three columns)
-        wxSizer* childLSizer;
-        wxStaticBoxSizer* audioSizer;
+  wxSlider** ctrl_audio_sliders;
+  static const int ctrl_audio_sliders_size = 6;
 
-		DECLARE_EVENT_TABLE()
+  wxSizer* parentSizer; // main window sizer (three columns)
+  wxSizer* childLSizer;
+  wxStaticBoxSizer* audioSizer;
+
+  DECLARE_EVENT_TABLE()
 };
 
 #endif

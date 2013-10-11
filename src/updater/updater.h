@@ -4,30 +4,28 @@
 #include <wx/event.h>
 #include <downloader/httpdownloader.h>
 
-class UpdaterClass : public wxEvtHandler
-{
-  public:
-    UpdaterClass();
-    ~UpdaterClass();
-    void CheckForUpdates();
+class UpdaterClass : public wxEvtHandler {
+public:
+  UpdaterClass();
+  ~UpdaterClass();
+  void CheckForUpdates();
 
-    bool StartUpdate( const wxString& latestVersion, const wxString& exe_to_update );
-    void OnDownloadEvent( wxCommandEvent& event );
+  bool StartUpdate(const wxString& latestVersion, const wxString& exe_to_update);
+  void OnDownloadEvent(wxCommandEvent& event);
 
 protected:
+  bool UpdateExe(const wxString& newexe, bool WaitForReboot);
+  bool UpdateLocale(const wxString& newdir, bool WaitForReboot);
 
-    bool UpdateExe( const wxString& newexe, bool WaitForReboot );
-    bool UpdateLocale( const wxString& newdir, bool WaitForReboot );
+  bool PostMinGW44(const wxString& newdir);
 
-    bool PostMinGW44( const wxString& newdir );
+  wxString m_newexe;
+  wxString m_currentexe;
+  wxString m_latest_version;
 
-    wxString m_newexe;
-    wxString m_currentexe;
-    wxString m_latest_version;
+  HttpDownloaderThread<UpdaterClass>* m_http_thread;
 
-    HttpDownloaderThread<UpdaterClass>* m_http_thread;
-
-    DECLARE_EVENT_TABLE()
+  DECLARE_EVENT_TABLE()
 };
 
 UpdaterClass& Updater();
@@ -50,4 +48,3 @@ UpdaterClass& Updater();
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

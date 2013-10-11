@@ -7,20 +7,19 @@
 class ChannelChooserPanel;
 class wxBoxSizer;
 
-class ChannelChooserDialog : public wxDialog, public WindowAttributesPickle
-{
-    public:
-        ChannelChooserDialog(wxWindow* parent, wxWindowID id, const wxString& title,
-            long style = wxCAPTION | wxRESIZE_BORDER | wxCLOSE_BOX | wxMAXIMIZE_BOX | wxMINIMIZE_BOX | wxDEFAULT_DIALOG_STYLE );
-        virtual ~ChannelChooserDialog();
+class ChannelChooserDialog : public wxDialog, public WindowAttributesPickle {
+public:
+  ChannelChooserDialog(wxWindow* parent, wxWindowID id, const wxString& title,
+                       long style = wxCAPTION | wxRESIZE_BORDER | wxCLOSE_BOX | wxMAXIMIZE_BOX | wxMINIMIZE_BOX |
+                                    wxDEFAULT_DIALOG_STYLE);
+  virtual ~ChannelChooserDialog();
 
-        void AddChannel( const wxString& name, int usercount, const wxString& topic = wxEmptyString );
-        void ClearChannels();
+  void AddChannel(const wxString& name, int usercount, const wxString& topic = wxEmptyString);
+  void ClearChannels();
 
-    protected:
-        ChannelChooserPanel* m_chooser_panel;
-        wxBoxSizer* m_main_sizer;
-
+protected:
+  ChannelChooserPanel* m_chooser_panel;
+  wxBoxSizer* m_main_sizer;
 };
 
 #endif // SPRINGLOBBY_CHANNELCHOOSERDIALOG_H_INCLUDED
@@ -41,4 +40,3 @@ class ChannelChooserDialog : public wxDialog, public WindowAttributesPickle
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

@@ -16,209 +16,203 @@ struct BattleStartRect;
 class SinglePlayerBattle;
 class Ui;
 namespace LSL {
-    struct UnitsyncMap;
+struct UnitsyncMap;
 }
 class BattleRoomTab;
 
-class MapCtrl : public wxPanel
-{
+class MapCtrl : public wxPanel {
 
-	enum RectangleArea
-	{
-		Main = -1,
-		UpLeft,
-		UpRight,
-		DownRight,
-		DownLeft,
-		UpAllyButton,
-		DownAllyButton,
-		Side,
-		UpHandicapButton,
-		DownHandicapButton,
-		Handicap,
-		Close,
-		Move,
-		Download,
-		Refreshing
-	};
+  enum RectangleArea {
+    Main = -1,
+    UpLeft,
+    UpRight,
+    DownRight,
+    DownLeft,
+    UpAllyButton,
+    DownAllyButton,
+    Side,
+    UpHandicapButton,
+    DownHandicapButton,
+    Handicap,
+    Close,
+    Move,
+    Download,
+    Refreshing
+  };
 
-	enum MouseAction
-	{
-		None,
-		Add,
-		Delete,
-		Moved,
-		ResizeUpLeft,
-		ResizeUpRight,
-		ResizeDownLeft,
-		ResizeDownRight
-	};
+  enum MouseAction {
+    None,
+    Add,
+    Delete,
+    Moved,
+    ResizeUpLeft,
+    ResizeUpRight,
+    ResizeDownLeft,
+    ResizeDownRight
+  };
 
-	enum UserRectOrientation
-	{
-		TopLeft,
-		BottomLeft,
-		TopRight,
-		BottomRight
-	};
+  enum UserRectOrientation {
+    TopLeft,
+    BottomLeft,
+    TopRight,
+    BottomRight
+  };
 
+public:
+  MapCtrl(wxWindow* parent, int size, IBattle* battle, bool readonly, bool fixed_size, bool draw_start_types,
+          bool singleplayer);
+  ~MapCtrl();
 
-  public:
-    MapCtrl( wxWindow* parent, int size, IBattle* battle, bool readonly, bool fixed_size, bool draw_start_types, bool singleplayer );
-    ~MapCtrl();
+  void SetBattle(IBattle* battle);
 
-    void SetBattle( IBattle* battle );
+  void UpdateMinimap();
 
-    void UpdateMinimap();
+  void OnPaint(wxPaintEvent& event);
+  void OnResize(wxSizeEvent& event);
 
-    void OnPaint( wxPaintEvent& event );
-    void OnResize( wxSizeEvent& event );
+  void OnMouseMove(wxMouseEvent& event);
+  void OnLeftDown(wxMouseEvent& event);
+  void OnLeftUp(wxMouseEvent& event);
+  void OnRightUp(wxMouseEvent& event);
+  void OnMouseWheel(wxMouseEvent& event);
 
-    void OnMouseMove( wxMouseEvent& event );
-    void OnLeftDown( wxMouseEvent& event );
-    void OnLeftUp( wxMouseEvent& event );
-    void OnRightUp( wxMouseEvent& event );
-    void OnMouseWheel( wxMouseEvent& event );
+  void OnGetMapImageAsyncCompleted(const std::string mapname);
 
-    void OnGetMapImageAsyncCompleted(const std::string mapname);
+  void OnRefresh(wxCommandEvent& event);
 
-    void OnRefresh( wxCommandEvent& event );
+  void SetReadOnly(bool readonly) { m_ro = readonly; }
 
-    void SetReadOnly( bool readonly ) { m_ro = readonly; }
+protected:
+  int LoadMinimap();
+  void FreeMinimap();
 
+  BattleStartRect GetBattleRect(int x1, int y1, int x2, int y2, int ally = -1) const;
 
-   protected:
+  /** Get the rect occupied by the minimap.
+   *
+   * @see GetDrawableRect
+   */
+  wxRect GetMinimapRect() const;
 
-    int LoadMinimap();
-    void FreeMinimap();
+  /** Get the widget-drawable area as a wxRect.  This is similar to
+   * GetMinimapRect, but includes the area not filled by the minimap.
+   *
+   * @return The wxRect corresponding {0, 0, ClientWidth, ClientHeight}.
+   *
+   * @see GetMinimapRect, wxWindow::GetClientSize
+   */
+  wxRect GetDrawableRect() const;
 
-	BattleStartRect GetBattleRect( int x1, int y1, int x2, int y2, int ally = -1 ) const;
+  wxRect GetStartRect(int index) const;
+  wxRect GetStartRect(const BattleStartRect& sr) const;
+  void Accumulate(wxImage& image) const;
+  double GetStartRectMetalFraction(int index) const;
+  double GetStartRectMetalFraction(const BattleStartRect& sr) const;
 
-    /** Get the rect occupied by the minimap.
-     *
-     * @see GetDrawableRect
-     */
-    wxRect GetMinimapRect() const;
+  void DrawOutlinedText(wxDC& dc, const wxString& str, int x, int y, const wxColour& outline,
+                        const wxColour& font) const;
 
-    /** Get the widget-drawable area as a wxRect.  This is similar to
-     * GetMinimapRect, but includes the area not filled by the minimap.
-     *
-     * @return The wxRect corresponding {0, 0, ClientWidth, ClientHeight}.
-     *
-     * @see GetMinimapRect, wxWindow::GetClientSize
-     */
-    wxRect GetDrawableRect() const;
+  /** Get the relative (range: [0.0,1.0]) x- and y- coordinates of
+   * the user's start position.
+   */
+  wxRealPoint GetUserMapPositionAsReal(const User& user) const;
 
-	wxRect GetStartRect( int index ) const;
-	wxRect GetStartRect( const BattleStartRect& sr ) const;
-	void Accumulate( wxImage& image ) const;
-	double GetStartRectMetalFraction( int index ) const;
-	double GetStartRectMetalFraction( const BattleStartRect& sr ) const;
+  /** Get an absolute (relative to the client's [*this* MapCtrl
+   * widget's] drawable area) user map position.
+   *
+   * The returned point is as would be used with wxDC methods.
+   */
+  wxPoint GetTranslatedScaledUserMapPosition(const User& user) const;
 
-	void DrawOutlinedText( wxDC& dc, const wxString& str, int x, int y, const wxColour& outline, const wxColour& font ) const;
+  wxRect GetUserRect(const User& user, bool selected);
+  RectangleArea GetUserRectArea(const wxRect& userrect, int x, int y) const;
 
-    /** Get the relative (range: [0.0,1.0]) x- and y- coordinates of
-     * the user's start position.
-     */
-    wxRealPoint GetUserMapPositionAsReal(const User& user) const;
+  wxRect GetUserSideRect() const { return wxRect(37, 20, 16, 16); }
+  wxRect GetUserHandicapRect() const { return wxRect(40, 55, 16, 16); }
+  wxRect GetUserCloseRect() const { return wxRect(59, 4, 14, 14); }
+  wxRect GetUserUpAllyButtonRect() const { return wxRect(61, 35, 12, 8); }
+  wxRect GetUserDownAllyButtonRect() const { return wxRect(61, 43, 12, 8); }
+  wxRect GetUserUpHandicapButtonRect() const { return wxRect(61, 52, 12, 8); }
+  wxRect GetUserDownHandicapButtonRect() const { return wxRect(61, 60, 12, 8); }
 
-    /** Get an absolute (relative to the client's [*this* MapCtrl
-     * widget's] drawable area) user map position.
-     *
-     * The returned point is as would be used with wxDC methods.
-     */
-    wxPoint GetTranslatedScaledUserMapPosition(const User& user) const;
+  wxRect GetRefreshRect() const;
+  wxRect GetDownloadRect() const;
 
-    wxRect GetUserRect( const User& user, bool selected );
-	RectangleArea GetUserRectArea( const wxRect& userrect, int x, int y ) const;
+  unsigned int GetNewRectIndex() const;
 
-	wxRect GetUserSideRect() const { return wxRect( 37, 20, 16, 16 ); }
-	wxRect GetUserHandicapRect()const  { return wxRect( 40, 55, 16, 16 ); }
-	wxRect GetUserCloseRect() const { return wxRect( 59, 4, 14, 14 ); }
-	wxRect GetUserUpAllyButtonRect() const { return wxRect( 61, 35, 12, 8 ); }
-	wxRect GetUserDownAllyButtonRect() const { return wxRect( 61, 43, 12, 8 ); }
-	wxRect GetUserUpHandicapButtonRect() const { return wxRect( 61, 52, 12, 8 ); }
-	wxRect GetUserDownHandicapButtonRect() const { return wxRect( 61, 60, 12, 8 ); }
+  void RequireImages();
 
-	wxRect GetRefreshRect() const;
-	wxRect GetDownloadRect() const;
+  void RelocateUsers();
 
-	unsigned int GetNewRectIndex() const;
+  void GetClosestStartPos(int fromx, int fromy, int& index, int& x, int& y, int& range);
 
-    void RequireImages();
+  void DrawUser(wxDC& dc, User& user, bool selected, bool moving);
+  void DrawUserPositions(wxDC& dc);
+  void DrawBackground(wxDC& dc);
+  void DrawStartRects(wxDC& dc);
+  void DrawStartPositions(wxDC& dc);
+  void DrawStartRect(wxDC& dc, int index, wxRect& sr, const wxColour& col, bool mouseover, int alphalevel = 70,
+                     bool forceInsideMinimap = true);
 
-    void RelocateUsers();
+  void SetMouseOverRect(int index);
 
-    void GetClosestStartPos( int fromx, int fromy, int& index, int& x, int& y, int& range );
+  void _SetCursor();
 
-    void DrawUser( wxDC& dc, User& user, bool selected, bool moving );
-    void DrawUserPositions( wxDC& dc );
-    void DrawBackground( wxDC& dc );
-    void DrawStartRects( wxDC& dc );
-    void DrawStartPositions( wxDC& dc );
-    void DrawStartRect( wxDC& dc, int index, wxRect& sr, const wxColour& col, bool mouseover, int alphalevel = 70, bool forceInsideMinimap = true );
+  LSL::UnitSyncAsyncOps m_async;
 
-    void SetMouseOverRect( int index );
+  wxBitmap* m_minimap;
+  wxBitmap* m_metalmap;
+  wxBitmap* m_heightmap;
+  wxImage m_metalmap_cumulative;
 
-    void _SetCursor();
+  IBattle* m_battle;
 
-    LSL::UnitSyncAsyncOps m_async;
+  std::string m_mapname;
 
-    wxBitmap* m_minimap;
-    wxBitmap* m_metalmap;
-    wxBitmap* m_heightmap;
-    wxImage m_metalmap_cumulative;
+  bool m_draw_start_types;
+  bool m_fixed_size;
+  bool m_ro;
+  bool m_sp;
 
-    IBattle* m_battle;
+  int m_mover_rect;
+  int m_mdown_rect;
 
-    std::string m_mapname;
+  RectangleArea m_rect_area;
+  RectangleArea m_last_rect_area;
 
-    bool m_draw_start_types;
-    bool m_fixed_size;
-    bool m_ro;
-    bool m_sp;
+  RectangleArea m_mdown_area;
+  BattleStartRect m_tmp_brect;
 
-    int m_mover_rect;
-    int m_mdown_rect;
+  MouseAction m_maction;
+  int m_mdown_x;
+  int m_mdown_y;
 
-    RectangleArea m_rect_area;
-    RectangleArea m_last_rect_area;
+  wxSize m_lastsize;
 
-    RectangleArea m_mdown_area;
-    BattleStartRect m_tmp_brect;
+  wxBitmap* m_close_img;
+  wxBitmap* m_close_hi_img;
 
-    MouseAction m_maction;
-    int m_mdown_x;
-    int m_mdown_y;
+  wxBitmap* m_start_ally;
+  wxBitmap* m_start_enemy;
+  wxBitmap* m_start_unused;
 
-    wxSize m_lastsize;
+  wxBitmap* m_player_img;
+  wxBitmap* m_bot_img;
 
-    wxBitmap* m_close_img;
-    wxBitmap* m_close_hi_img;
+  wxBitmap* m_nfound_img;
+  wxBitmap* m_reload_img;
+  wxBitmap* m_dl_img;
 
-    wxBitmap* m_start_ally;
-    wxBitmap* m_start_enemy;
-    wxBitmap* m_start_unused;
+  LSL::UnitsyncMap m_map;
 
-    wxBitmap* m_player_img;
-    wxBitmap* m_bot_img;
+  User* m_user_expanded;
 
-    wxBitmap* m_nfound_img;
-    wxBitmap* m_reload_img;
-    wxBitmap* m_dl_img;
-
-    LSL::UnitsyncMap m_map;
-
-    User* m_user_expanded;
-
-
-    enum InfoMap
-    {
-      IM_Minimap,  // must be first one
-      IM_Metalmap, // entries must be consecutively numbered (without gaps)
-      IM_Heightmap,
-	  IM_Count     // must be last one
-    } m_current_infomap;
+  enum InfoMap {
+    IM_Minimap,  // must be first one
+    IM_Metalmap, // entries must be consecutively numbered (without gaps)
+    IM_Heightmap,
+    IM_Count // must be last one
+  } m_current_infomap;
 
   DECLARE_EVENT_TABLE()
 };
@@ -241,4 +235,3 @@ class MapCtrl : public wxPanel
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

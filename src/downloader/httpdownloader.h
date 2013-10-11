@@ -7,32 +7,33 @@
 const wxEventType httpDownloadEvtComplete = wxNewEventType();
 const wxEventType httpDownloadEvtFailed = wxNewEventType();
 
-template < class ParentClass >
-class HttpDownloaderThread : public wxThread
-{
-	public:
-		HttpDownloaderThread(  const wxString& FileUrl, const wxString& DestPath, ParentClass& parent, int code = 0, const bool notify = true, const bool unzip = true, const wxString& noticeErr = wxEmptyString, const wxString& noticeOk = wxEmptyString );
-		~HttpDownloaderThread();
-		void Init();
-		void* Entry();
-		void CloseThread();
-		bool TestDestroy();
-	private:
-		bool m_destroy;
+template <class ParentClass>
+class HttpDownloaderThread : public wxThread {
+public:
+  HttpDownloaderThread(const wxString& FileUrl, const wxString& DestPath, ParentClass& parent, int code = 0,
+                       const bool notify = true, const bool unzip = true, const wxString& noticeErr = wxEmptyString,
+                       const wxString& noticeOk = wxEmptyString);
+  ~HttpDownloaderThread();
+  void Init();
+  void* Entry();
+  void CloseThread();
+  bool TestDestroy();
 
-		wxString m_destpath;
-		wxString m_fileurl;
-		bool Unzip();
-		bool m_do_unzip;
-		bool m_notifyOnDownloadEvent;
+private:
+  bool m_destroy;
 
-		wxString m_noticeErr;
-		wxString m_noticeOk;
+  wxString m_destpath;
+  wxString m_fileurl;
+  bool Unzip();
+  bool m_do_unzip;
+  bool m_notifyOnDownloadEvent;
 
-		int m_id_code;
+  wxString m_noticeErr;
+  wxString m_noticeOk;
 
-		ParentClass& m_parent;
+  int m_id_code;
 
+  ParentClass& m_parent;
 };
 
 #include "httpdownloader.cpp"
@@ -55,4 +56,3 @@ class HttpDownloaderThread : public wxThread
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

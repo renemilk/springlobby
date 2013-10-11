@@ -16,58 +16,55 @@ class wxImageList;
 class SLNotebook;
 class wxNotebook;
 
-class MainJoinBattleTab : public wxScrolledWindow
-{
-  public:
-    MainJoinBattleTab( wxWindow* parent );
-     ~MainJoinBattleTab();
+class MainJoinBattleTab : public wxScrolledWindow {
+public:
+  MainJoinBattleTab(wxWindow* parent);
+  ~MainJoinBattleTab();
 
-    void HostBattle( Battle& battle );
-    void JoinBattle( Battle& battle );
-    //void UpdateCurrentBattle();
-    void UpdateCurrentBattle();
-    void UpdateCurrentBattle( const wxString& Tag );
-    void LeaveCurrentBattle( bool called_from_join = false );
-    Battle* GetCurrentBattle();
-    ChatPanel* GetActiveChatPanel();
+  void HostBattle(Battle& battle);
+  void JoinBattle(Battle& battle);
+  // void UpdateCurrentBattle();
+  void UpdateCurrentBattle();
+  void UpdateCurrentBattle(const wxString& Tag);
+  void LeaveCurrentBattle(bool called_from_join = false);
+  Battle* GetCurrentBattle();
+  ChatPanel* GetActiveChatPanel();
 
-    void BattleUserUpdated( User& user );
-    BattleRoomTab& GetBattleRoomTab();
-    BattleMapTab& GetBattleMapTab();
-    BattleOptionsTab& GetOptionsTab();
-    BattleroomMMOptionsTab<Battle>& GetMMOptionsTab();
+  void BattleUserUpdated(User& user);
+  BattleRoomTab& GetBattleRoomTab();
+  BattleMapTab& GetBattleMapTab();
+  BattleOptionsTab& GetOptionsTab();
+  BattleroomMMOptionsTab<Battle>& GetMMOptionsTab();
 
-    void ReloadPresetList();
+  void ReloadPresetList();
 
-    void LoadPerspective( const wxString& perspective_name = wxEmptyString );
-    void SavePerspective( const wxString& perspective_name = wxEmptyString );
-    bool UseBattlePerspective();
+  void LoadPerspective(const wxString& perspective_name = wxEmptyString);
+  void SavePerspective(const wxString& perspective_name = wxEmptyString);
+  bool UseBattlePerspective();
 
-    void FocusBattleRoomTab();
+  void FocusBattleRoomTab();
 
-    void OnUpdate();
-  protected:
-    wxBoxSizer* m_main_sizer;
+  void OnUpdate();
 
-    wxImageList* m_imagelist;
+protected:
+  wxBoxSizer* m_main_sizer;
 
-    SLNotebook* m_tabs;
+  wxImageList* m_imagelist;
 
-    BattleRoomTab* m_battle_tab;
-    BattleMapTab* m_map_tab;
-    BattleOptionsTab* m_opts_tab;
-    BattleroomMMOptionsTab<Battle>* m_mm_opts_tab;
+  SLNotebook* m_tabs;
 
-    void PreSwitchBattlePerspective ( );
-    void PostSwitchBattlePerspective( );
+  BattleRoomTab* m_battle_tab;
+  BattleMapTab* m_map_tab;
+  BattleOptionsTab* m_opts_tab;
+  BattleroomMMOptionsTab<Battle>* m_mm_opts_tab;
 
-    enum {
-        BATTLE_TABS = wxID_HIGHEST
-    };
+  void PreSwitchBattlePerspective();
+  void PostSwitchBattlePerspective();
 
+  enum {
+    BATTLE_TABS = wxID_HIGHEST
+  };
 };
-
-
 
 #endif // SPRINGLOBBY_HEADERGUARD_MAINJOINBATTLETAB_H
 
@@ -87,4 +84,3 @@ class MainJoinBattleTab : public wxScrolledWindow
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

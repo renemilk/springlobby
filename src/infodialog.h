@@ -15,16 +15,14 @@
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-
 #ifndef INFODIALOG_H
 #define INFODIALOG_H
 
 #include <wx/dialog.h>
 
-class InfoDialog : public wxDialog
-{
+class InfoDialog : public wxDialog {
 public:
-	InfoDialog(wxWindow* parent = 0 );
+  InfoDialog(wxWindow* parent = 0);
 };
 
 #endif // INFODIALOG_H

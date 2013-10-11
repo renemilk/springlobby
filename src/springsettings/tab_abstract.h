@@ -31,67 +31,58 @@ class wxCloseEvent;
 class wxSpinEvent;
 class SlSpinDoubleEvent;
 
-
-typedef std::map<wxString,int> intMap;
-typedef std::map<wxString,wxString> stringMap;
-typedef std::map<wxString,float> floatMap;
+typedef std::map<wxString, int> intMap;
+typedef std::map<wxString, wxString> stringMap;
+typedef std::map<wxString, float> floatMap;
 
 template <int numerator, int denominator = 1>
-class Scaler
-{
-    private:
+class Scaler {
+private:
+public:
+  template <typename T>
+  static T Up(const T val) {
+    const double fac = denominator != 0 ? numerator / (double)denominator : numerator;
+    return (T)(fac * val);
+  }
 
-
-    public:
-        template < typename T >
-        static T Up( const T val )
-        {
-            const double fac = denominator != 0 ? numerator/(double)denominator : numerator;
-            return (T) ( fac * val );
-        }
-
-        template < typename T >
-        static T Down ( const T val )
-        {
-            const double fac = denominator != 0 ? numerator/(double)denominator : numerator;
-            return (T) ( val / fac );
-        }
+  template <typename T>
+  static T Down(const T val) {
+    const double fac = denominator != 0 ? numerator / (double)denominator : numerator;
+    return (T)(val / fac);
+  }
 };
 
+class abstract_panel : public wxScrolledWindow {
 
-class abstract_panel : public wxScrolledWindow
-{
+public:
+  abstract_panel(wxWindow* parent, wxWindowID id = 1, const wxString& title = wxT("Project2"),
+                 const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0);
+  virtual ~abstract_panel();
 
-	public:
-		abstract_panel(wxWindow *parent, wxWindowID id = 1, const wxString &title = wxT("Project2"),
-				const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0);
-		virtual ~abstract_panel();
+  void OnSliderMove(wxCommandEvent&);
+  void OnTextUpdate(wxCommandEvent&);
+  void OnCheckBoxTick(wxCommandEvent&);
+  void OnRadioButtonToggle(wxCommandEvent&);
+  // void update(wxIdleEvent&);
+  virtual void OnComboBoxChange(wxCommandEvent& event);
+  static intMap intSettings;
+  // static stringMap stringSettings;
+  static floatMap floatSettings;
+  static bool settingsChanged;
+  static bool saveSettings();
 
-		void OnSliderMove(wxCommandEvent&);
-		void OnTextUpdate(wxCommandEvent&);
-		void OnCheckBoxTick(wxCommandEvent&);
-		void OnRadioButtonToggle(wxCommandEvent&);
-		//void update(wxIdleEvent&);
-		virtual void OnComboBoxChange(wxCommandEvent& event);
-		static intMap intSettings;
-		//static stringMap stringSettings;
-		static floatMap floatSettings;
-		static bool settingsChanged;
-		static bool saveSettings();
+  static void loadDefaults();
+  virtual void updateControls(int what_to_update);
+  static bool loadValuesIntoMap();
+  void OnSpinControlChange(wxSpinEvent& event);
+  void OnSpinCtrlDoubleChange(SlSpinDoubleEvent& event);
 
-		static void loadDefaults();
-		virtual void updateControls(int what_to_update);
-		static bool loadValuesIntoMap();
-		void OnSpinControlChange(wxSpinEvent& event);
-		void OnSpinCtrlDoubleChange(SlSpinDoubleEvent& event);
-    protected:
-        void OnClose(wxCloseEvent& event);
-		void CreateGUIControls();
+protected:
+  void OnClose(wxCloseEvent& event);
+  void CreateGUIControls();
 
-    private:
-
-
-		DECLARE_EVENT_TABLE()
+private:
+  DECLARE_EVENT_TABLE()
 };
 
 #endif

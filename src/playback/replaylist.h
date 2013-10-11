@@ -1,7 +1,6 @@
 #ifndef SPRINGLOBBY_REPLAYLIST_H_INCLUDED
 #define SPRINGLOBBY_REPLAYLIST_H_INCLUDED
 
-
 #include <wx/string.h>
 
 #include "playbacklist.h"
@@ -9,25 +8,25 @@
 /*
 copied from spring sources for reference
 struct DemoFileHeader {
-	char magic[16];         ///< DEMOFILE_MAGIC
-	int version;            ///< DEMOFILE_VERSION
-	int headerSize;         ///< Size of the DemoFileHeader, minor version number.
-	char versionString[16]; ///< Spring version string, e.g. "0.75b2", "0.75b2+svn4123"
-	Uint8 gameID[16];       ///< Unique game identifier. Identical for each player of the game.
-	Uint64 unixTime;        ///< Unix time when game was started.
-	int scriptSize;         ///< Size of startscript.
-	int demoStreamSize;     ///< Size of the demo stream.
-	int gameTime;           ///< Total number of seconds game time.
-	int wallclockTime;      ///< Total number of seconds wallclock time.
-	int maxPlayerNum;       ///< Maximum player number which was used in this game.
-	int numPlayers;         ///< Number of players for which stats are saved.
-	int playerStatSize;     ///< Size of the entire player statistics chunk.
-	int playerStatElemSize; ///< sizeof(CPlayer::Statistics)
-	int numTeams;           ///< Number of teams for which stats are saved.
-	int teamStatSize;       ///< Size of the entire team statistics chunk.
-	int teamStatElemSize;   ///< sizeof(CTeam::Statistics)
-	int teamStatPeriod;     ///< Interval (in seconds) between team stats.
-	int winningAllyTeam;    ///< The ally team that won the game, -1 if unknown.
+  char magic[16];         ///< DEMOFILE_MAGIC
+  int version;            ///< DEMOFILE_VERSION
+  int headerSize;         ///< Size of the DemoFileHeader, minor version number.
+  char versionString[16]; ///< Spring version string, e.g. "0.75b2", "0.75b2+svn4123"
+  Uint8 gameID[16];       ///< Unique game identifier. Identical for each player of the game.
+  Uint64 unixTime;        ///< Unix time when game was started.
+  int scriptSize;         ///< Size of startscript.
+  int demoStreamSize;     ///< Size of the demo stream.
+  int gameTime;           ///< Total number of seconds game time.
+  int wallclockTime;      ///< Total number of seconds wallclock time.
+  int maxPlayerNum;       ///< Maximum player number which was used in this game.
+  int numPlayers;         ///< Number of players for which stats are saved.
+  int playerStatSize;     ///< Size of the entire player statistics chunk.
+  int playerStatElemSize; ///< sizeof(CPlayer::Statistics)
+  int numTeams;           ///< Number of teams for which stats are saved.
+  int teamStatSize;       ///< Size of the entire team statistics chunk.
+  int teamStatElemSize;   ///< sizeof(CTeam::Statistics)
+  int teamStatPeriod;     ///< Interval (in seconds) between team stats.
+  int winningAllyTeam;    ///< The ally team that won the game, -1 if unknown.
 };
 */
 
@@ -36,25 +35,23 @@ struct Replay;
 template <class PB, class I>
 class GlobalObjectHolder;
 
-class ReplayList : public PlaybackList<Replay>
-{
-	public:
+class ReplayList : public PlaybackList<Replay> {
+public:
+  typedef Replay PlaybackType;
+  virtual void LoadPlaybacks(const std::vector<std::string>& filenames);
 
-	typedef Replay PlaybackType;
-	virtual void LoadPlaybacks(const std::vector<std::string>& filenames );
 protected:
-	ReplayList();
+  ReplayList();
 
-	template <class PB, class T>
-	friend class LSL::Util::GlobalObjectHolder;
-
+  template <class PB, class T>
+  friend class LSL::Util::GlobalObjectHolder;
 
 private:
-	bool GetReplayInfos(const wxString& ReplayPath, Replay& ret ) const;
-	int replayVersion(wxFile& ReplayPath ) const;
-	wxString GetScriptFromReplay (wxFile& ReplayPath, const int version ) const;
-	//! saves relevant infos from header into replay struct
-	void GetHeaderInfo(wxFile& ReplayPath, Replay& rep,const int version ) const;
+  bool GetReplayInfos(const wxString& ReplayPath, Replay& ret) const;
+  int replayVersion(wxFile& ReplayPath) const;
+  wxString GetScriptFromReplay(wxFile& ReplayPath, const int version) const;
+  //! saves relevant infos from header into replay struct
+  void GetHeaderInfo(wxFile& ReplayPath, Replay& rep, const int version) const;
 };
 
 #endif // SPRINGLOBBY_REPLAYLIST_H_INCLUDED
@@ -75,4 +72,3 @@ private:
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

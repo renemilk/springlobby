@@ -3,95 +3,65 @@
 
 #include <wx/aui/aui.h>
 
-class SLArtProvider : public wxAuiTabArt
-{
+class SLArtProvider : public wxAuiTabArt {
 
 public:
+  SLArtProvider();
+  virtual ~SLArtProvider();
 
-    SLArtProvider();
-    virtual ~SLArtProvider();
+  wxAuiTabArt* Clone();
+  void SetFlags(unsigned int flags);
+  void SetSizingInfo(const wxSize& tab_ctrl_size, size_t tab_count);
 
-    wxAuiTabArt* Clone();
-    void SetFlags(unsigned int flags);
-    void SetSizingInfo(const wxSize& tab_ctrl_size,
-                       size_t tab_count);
+  void SetNormalFont(const wxFont& font);
+  void SetSelectedFont(const wxFont& font);
+  void SetMeasuringFont(const wxFont& font);
 
-    void SetNormalFont(const wxFont& font);
-    void SetSelectedFont(const wxFont& font);
-    void SetMeasuringFont(const wxFont& font);
+  void DrawBackground(wxDC& dc, wxWindow* wnd, const wxRect& rect);
 
-    void DrawBackground(
-                 wxDC& dc,
-                 wxWindow* wnd,
-                 const wxRect& rect);
+  void DrawTab(wxDC& dc, wxWindow* wnd, const wxAuiNotebookPage& pane, const wxRect& in_rect, int close_button_state,
+               wxRect* out_tab_rect, wxRect* out_button_rect, int* x_extent);
 
-    void DrawTab(wxDC& dc,
-                 wxWindow* wnd,
-                 const wxAuiNotebookPage& pane,
-                 const wxRect& in_rect,
-                 int close_button_state,
-                 wxRect* out_tab_rect,
-                 wxRect* out_button_rect,
-                 int* x_extent);
+  void DrawButton(wxDC& dc, wxWindow* wnd, const wxRect& in_rect, int bitmap_id, int button_state, int orientation,
+                  wxRect* out_rect);
 
-    void DrawButton(
-                 wxDC& dc,
-                 wxWindow* wnd,
-                 const wxRect& in_rect,
-                 int bitmap_id,
-                 int button_state,
-                 int orientation,
-                 wxRect* out_rect);
+  int GetIndentSize();
 
-    int GetIndentSize();
+  wxSize GetTabSize(wxDC& dc, wxWindow* wnd, const wxString& caption, const wxBitmap& bitmap, bool active,
+                    int close_button_state, int* x_extent);
 
-    wxSize GetTabSize(
-                 wxDC& dc,
-                 wxWindow* wnd,
-                 const wxString& caption,
-                 const wxBitmap& bitmap,
-                 bool active,
-                 int close_button_state,
-                 int* x_extent);
+  int ShowDropDown(wxWindow* wnd, const wxAuiNotebookPageArray& items, int active_idx);
 
-    int ShowDropDown(
-                 wxWindow* wnd,
-                 const wxAuiNotebookPageArray& items,
-                 int active_idx);
+  int GetBestTabCtrlSize(wxWindow* wnd, const wxAuiNotebookPageArray& pages, const wxSize& required_bmp_size);
 
-    int GetBestTabCtrlSize(wxWindow* wnd,
-                 const wxAuiNotebookPageArray& pages,
-                 const wxSize& required_bmp_size);
+  virtual void SetColour(const wxColour& colour);
+  virtual void SetActiveColour(const wxColour& colour);
 
-	virtual void SetColour(const wxColour& colour);
-	virtual void SetActiveColour(const wxColour& colour);
-
-	virtual void DrawBorder(wxDC&, wxWindow*, const wxRect&) {}
-	virtual int GetBorderWidth(wxWindow*) {return 0;}
-	virtual int GetAdditionalBorderSpace(wxWindow*) { return 0;}
+  virtual void DrawBorder(wxDC&, wxWindow*, const wxRect&) {}
+  virtual int GetBorderWidth(wxWindow*) { return 0; }
+  virtual int GetAdditionalBorderSpace(wxWindow*) { return 0; }
 
 protected:
+  wxFont m_normal_font;
+  wxFont m_selected_font;
+  wxFont m_measuring_font;
+  wxColour m_base_colour;
+  wxColour m_active_colour;
+  wxPen m_base_colour_pen;
+  wxPen m_border_pen;
+  wxBrush m_base_colour_brush;
+  wxBitmap m_active_close_bmp;
+  wxBitmap m_disabled_close_bmp;
+  wxBitmap m_active_left_bmp;
+  wxBitmap m_disabled_left_bmp;
+  wxBitmap m_active_right_bmp;
+  wxBitmap m_disabled_right_bmp;
+  wxBitmap m_active_windowlist_bmp;
+  wxBitmap m_disabled_windowlist_bmp;
 
-    wxFont m_normal_font;
-    wxFont m_selected_font;
-    wxFont m_measuring_font;
-    wxColour m_base_colour;
-	wxColour m_active_colour;
-    wxPen m_base_colour_pen;
-    wxPen m_border_pen;
-    wxBrush m_base_colour_brush;
-    wxBitmap m_active_close_bmp;
-    wxBitmap m_disabled_close_bmp;
-    wxBitmap m_active_left_bmp;
-    wxBitmap m_disabled_left_bmp;
-    wxBitmap m_active_right_bmp;
-    wxBitmap m_disabled_right_bmp;
-    wxBitmap m_active_windowlist_bmp;
-    wxBitmap m_disabled_windowlist_bmp;
-
-    int m_fixed_tab_width;
-    int m_tab_ctrl_height;
-    unsigned int m_flags;
+  int m_fixed_tab_width;
+  int m_tab_ctrl_height;
+  unsigned int m_flags;
 };
 
 #endif // SPRINGLOBBY_ARTPROVIDER_H_INCLUDED
@@ -112,4 +82,3 @@ protected:
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

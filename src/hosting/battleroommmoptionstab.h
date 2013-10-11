@@ -14,7 +14,7 @@ const int BUTTON_ID_OFFSET = 7000;
 class wxBoxSizer;
 class wxStaticBoxSizer;
 namespace LSL {
-    class OptionsWrapper;
+class OptionsWrapper;
 }
 class wxCheckBox;
 class wxComboBox;
@@ -27,7 +27,6 @@ class SlSpinDoubleEvent;
 class wxStaticText;
 class wxButton;
 
-
 /** \brief a panel displaying programmatically generated gui elements to manipulate mmOptions
  * Since storing of data is mixed in with gui elements, this is a very delicate place to apply changes to.
  * If there's ever any need / desire to refactor this, EXTENSIVE testing should be applied afterwards! \n
@@ -36,110 +35,100 @@ class wxButton;
  * That way we can use the inverse mapping in the event handlers to go from the name of event-generating gui element
  * to the mmOptionKey that needs to be changed.
  */
-template < class BattleType >
-class BattleroomMMOptionsTab : public wxScrolledWindow
-{
-	public:
-		BattleroomMMOptionsTab( BattleType* battle, wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL );
-		~BattleroomMMOptionsTab();
+template <class BattleType>
+class BattleroomMMOptionsTab : public wxScrolledWindow {
+public:
+  BattleroomMMOptionsTab(BattleType* battle, wxWindow* parent, wxWindowID id = wxID_ANY,
+                         const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(500, 300),
+                         long style = wxTAB_TRAVERSAL);
+  ~BattleroomMMOptionsTab();
 
-		void UpdateOptControls(wxString controlName);
-		//!relaod single category
-        void OnReloadControls(LSL::OptionsWrapper::GameOption flag);
-		//!reload all categories
-		void OnReloadControls();
+  void UpdateOptControls(wxString controlName);
+  //!relaod single category
+  void OnReloadControls(LSL::OptionsWrapper::GameOption flag);
+  //!reload all categories
+  void OnReloadControls();
 
-        void UpdatePresetList();
+  void UpdatePresetList();
 
-        void OnButton( wxCommandEvent& event );
-        void OnLoadPreset( wxCommandEvent& event );
-        void OnSavePreset( wxCommandEvent& event );
-        void OnDeletePreset( wxCommandEvent& event );
-        void OnSetModDefaultPreset( wxCommandEvent& event );
-        void OnInfoButton( wxCommandEvent& event );
+  void OnButton(wxCommandEvent& event);
+  void OnLoadPreset(wxCommandEvent& event);
+  void OnSavePreset(wxCommandEvent& event);
+  void OnDeletePreset(wxCommandEvent& event);
+  void OnSetModDefaultPreset(wxCommandEvent& event);
+  void OnInfoButton(wxCommandEvent& event);
 
-        BattleType* GetBattle();
-        void SetBattle( BattleType* battle );
+  BattleType* GetBattle();
+  void SetBattle(BattleType* battle);
 
-	protected:
-        BattleType* m_battle;
+protected:
+  BattleType* m_battle;
 
-		wxBoxSizer* m_main_sizer;
-		wxStaticBoxSizer* m_mod_options_sizer;
-		wxBoxSizer* m_mod_layout;
-		wxStaticBoxSizer* m_map_options_sizer;
-		wxBoxSizer* m_map_layout;
-		wxBoxSizer* m_map_mod_container;
+  wxBoxSizer* m_main_sizer;
+  wxStaticBoxSizer* m_mod_options_sizer;
+  wxBoxSizer* m_mod_layout;
+  wxStaticBoxSizer* m_map_options_sizer;
+  wxBoxSizer* m_map_layout;
+  wxBoxSizer* m_map_mod_container;
 
-        wxButton* m_load_btn;
-        wxButton* m_save_btn;
-        wxButton* m_delete_btn;
-        wxButton* m_default_btn;
-        wxComboBox* m_options_preset_sel;
+  wxButton* m_load_btn;
+  wxButton* m_save_btn;
+  wxButton* m_delete_btn;
+  wxButton* m_default_btn;
+  wxComboBox* m_options_preset_sel;
 
-        LSL::OptionsWrapper* m_mapmodoptions;
+  LSL::OptionsWrapper* m_mapmodoptions;
 
-        typedef BattleroomMMOptionsTab<BattleType>
-            ThisType;
+  typedef BattleroomMMOptionsTab<BattleType> ThisType;
 
-        friend class SlSpinCtrlDouble<ThisType>; //so we don't have to make the event handler public for everyone
-        //totally ok to store pointers here, since wx takes care of gui element destruction for us
-        typedef std::map<wxString,wxCheckBox*>
-            chkBoxMap;
-        typedef std::map<wxString,wxComboBox*>
-            comboBoxMap;
-        typedef std::map<wxString,SlSpinCtrlDouble<ThisType> * >
-            spinCtrlMap;
-        typedef std::map<wxString,wxTextCtrl*>
-            textCtrlMap;
-        typedef std::map<wxString,wxStaticText*>
-            staticTextMap;
-        typedef std::map<wxString,wxButton*>
-            buttonMap;
-        typedef std::map<wxString,wxString>
-            nameInfoMap; //! map control name <-> info (description)
+  friend class SlSpinCtrlDouble<ThisType>; // so we don't have to make the event handler public for everyone
+  // totally ok to store pointers here, since wx takes care of gui element destruction for us
+  typedef std::map<wxString, wxCheckBox*> chkBoxMap;
+  typedef std::map<wxString, wxComboBox*> comboBoxMap;
+  typedef std::map<wxString, SlSpinCtrlDouble<ThisType>*> spinCtrlMap;
+  typedef std::map<wxString, wxTextCtrl*> textCtrlMap;
+  typedef std::map<wxString, wxStaticText*> staticTextMap;
+  typedef std::map<wxString, wxButton*> buttonMap;
+  typedef std::map<wxString, wxString> nameInfoMap; //! map control name <-> info (description)
 
-		chkBoxMap m_chkbox_map;
-		comboBoxMap m_combox_map;
-		spinCtrlMap m_spinctrl_map;
-		textCtrlMap m_textctrl_map;
-		staticTextMap m_statictext_map;
-		buttonMap m_button_map;
-		nameInfoMap m_name_info_map;
+  chkBoxMap m_chkbox_map;
+  comboBoxMap m_combox_map;
+  spinCtrlMap m_spinctrl_map;
+  textCtrlMap m_textctrl_map;
+  staticTextMap m_statictext_map;
+  buttonMap m_button_map;
+  nameInfoMap m_name_info_map;
 
-		/** \brief setup toplevel sizer per GameOption with all child sizers ( sections )
-            */
-        void setupOptionsSizer( wxBoxSizer* parent_sizer, LSL::OptionsWrapper::GameOption optFlag );
+  /** \brief setup toplevel sizer per GameOption with all child sizers ( sections )
+          */
+  void setupOptionsSizer(wxBoxSizer* parent_sizer, LSL::OptionsWrapper::GameOption optFlag);
 
+  /** \brief generate Gui elements from loaded MMoptions
+   * for all values in all option maps create a control (pointer),
+   * set the controls name to the option key and add it to the appropiate map and sizer.
+   * \return the total num of controls in the sizer
+   */
+  int setupOptionsSectionSizer(const LSL::mmOptionSection& section, wxBoxSizer* parent_sizer,
+                               LSL::OptionsWrapper::GameOption optFlag);
 
-        /** \brief generate Gui elements from loaded MMoptions
-         * for all values in all option maps create a control (pointer),
-         * set the controls name to the option key and add it to the appropiate map and sizer.
-         * \return the total num of controls in the sizer
-         */
-        int setupOptionsSectionSizer(const LSL::mmOptionSection& section, wxBoxSizer* parent_sizer,
-                                     LSL::OptionsWrapper::GameOption optFlag);
+  /** \name Event handlers
+   * @{
+   * one event handler per gui element type \n
+   * these trigger a SendHostInfo(key) for the changed option
+   */
+  void OnComBoxChange(wxCommandEvent&);
+  void OnChkBoxChange(wxCommandEvent&);
+  void OnTextCtrlChange(wxCommandEvent& event);
+  void OnSpinCtrlDoubleChange(SlSpinDoubleEvent& event);
+  /** @} */
 
-		/** \name Event handlers
-		 * @{
-		 * one event handler per gui element type \n
-		 * these trigger a SendHostInfo(key) for the changed option
-		 */
-		void OnComBoxChange(wxCommandEvent&);
-		void OnChkBoxChange(wxCommandEvent&);
-		void OnTextCtrlChange(wxCommandEvent& event);
-		void OnSpinCtrlDoubleChange(SlSpinDoubleEvent& event);
-		/** @} */
+  wxButton* getButton(const wxWindowID id, const wxString& name);
 
-		wxButton* getButton( const wxWindowID id, const wxString& name );
-
-
-		DECLARE_EVENT_TABLE()
+  DECLARE_EVENT_TABLE()
 };
 
-enum
-{
-  BOPTS_LOADPRES =  wxID_HIGHEST,
+enum {
+  BOPTS_LOADPRES = wxID_HIGHEST,
   BOPTS_SAVEPRES,
   BOPTS_DELETEPRES,
   BOPTS_SETDEFAULTPRES,
@@ -166,4 +155,3 @@ enum
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

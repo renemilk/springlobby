@@ -24,49 +24,47 @@ class wxMouseEvent;
 
 /** \brief select map, draw startboxes (in sp define startpos)
  * \todo DOCMEMORE */
-class BattleMapTab : public wxScrolledWindow, public GlobalEvent
-{
-  public:
-    BattleMapTab( wxWindow* parent, Battle* battle );
-     ~BattleMapTab();
+class BattleMapTab : public wxScrolledWindow, public GlobalEvent {
+public:
+  BattleMapTab(wxWindow* parent, Battle* battle);
+  ~BattleMapTab();
 
-     void UpdateUser( User& user );
+  void UpdateUser(User& user);
 
-     void Update();
-     void Update( const wxString& Tag );
-     void ReloadMaplist();
+  void Update();
+  void Update(const wxString& Tag);
+  void ReloadMaplist();
 
-     void OnMapSelect( wxCommandEvent& event );
-     void OnMapBrowse( wxCommandEvent& event );
-     void OnStartTypeSelect( wxCommandEvent& event );
-     void OnMouseWheel( wxMouseEvent& event );
+  void OnMapSelect(wxCommandEvent& event);
+  void OnMapBrowse(wxCommandEvent& event);
+  void OnStartTypeSelect(wxCommandEvent& event);
+  void OnMouseWheel(wxMouseEvent& event);
 
-    void OnUnitsyncReloaded( wxCommandEvent& /*data*/ );
+  void OnUnitsyncReloaded(wxCommandEvent& /*data*/);
 
-    void SetMap( int index );
-    void SetBattle( Battle* battle );
-    Battle* GetBattle() { return m_battle; }
+  void SetMap(int index);
+  void SetBattle(Battle* battle);
+  Battle* GetBattle() { return m_battle; }
 
-  protected:
-    Battle* m_battle;
-    //LSL::UnitsyncMap m_map;
+protected:
+  Battle* m_battle;
+  // LSL::UnitsyncMap m_map;
 
-    MapCtrl* m_minimap;
-    wxChoice* m_map_combo;
-    wxButton* m_browse_btn;
-    wxRadioBox* m_start_radios;
-    wxListCtrl* m_map_opts_list;
-    wxStaticText* m_map_desc;
+  MapCtrl* m_minimap;
+  wxChoice* m_map_combo;
+  wxButton* m_browse_btn;
+  wxRadioBox* m_start_radios;
+  wxListCtrl* m_map_opts_list;
+  wxStaticText* m_map_desc;
 
-    enum {
-      BMAP_MAP_SEL = wxID_HIGHEST,
-      BMAP_MAP_BROWSE,
-      BMAP_START_TYPE
-    };
+  enum {
+    BMAP_MAP_SEL = wxID_HIGHEST,
+    BMAP_MAP_BROWSE,
+    BMAP_START_TYPE
+  };
 
-    DECLARE_EVENT_TABLE()
+  DECLARE_EVENT_TABLE()
 };
-
 
 #endif // SPRINGLOBBY_HEADERGUARD_BATTLEMAPTAB_H
 
@@ -86,4 +84,3 @@ class BattleMapTab : public wxScrolledWindow, public GlobalEvent
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

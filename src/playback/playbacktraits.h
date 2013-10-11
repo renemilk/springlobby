@@ -5,28 +5,24 @@ struct Replay;
 class ReplayList;
 
 class ReplayTraits {
-    public:
-        typedef Replay
-            PlaybackType;
+public:
+  typedef Replay PlaybackType;
 
-        typedef ReplayList
-            ListType;
+  typedef ReplayList ListType;
 
-        static const bool IsReplayType = true;
+  static const bool IsReplayType = true;
 };
 
 struct Savegame;
 class SavegameList;
 
 class SavegameTraits {
-    public:
-        typedef Savegame
-            PlaybackType;
+public:
+  typedef Savegame PlaybackType;
 
-        typedef SavegameList
-            ListType;
+  typedef SavegameList ListType;
 
-        static const bool IsReplayType = false;
+  static const bool IsReplayType = false;
 };
 
 #endif // PLAYBACKTRAITS_H_INCLUDED

@@ -23,204 +23,199 @@ class wxString;
 typedef int ServerError;
 class wxColour;
 
-
 typedef int HostInfo;
 
-
 //! @brief Abstract baseclass that is used to implement a server protocol.
-class Server : public iNetClass, public SL::NonCopyable
-{
-  public:
-	friend class ServerEvents;
-	friend class SimpleServerEvents;
+class Server : public iNetClass, public SL::NonCopyable {
+public:
+  friend class ServerEvents;
+  friend class SimpleServerEvents;
 
-    enum PortTestCode {
-      porttest_pass_WX26    = 0,
-      porttest_pass         = 1,
-      porttest_timeout      = 2,
-      porttest_socketNotOk  = 3,
-      porttest_socketError  = 4,
-      porttest_unreachable  = 5
-    };
+  enum PortTestCode {
+    porttest_pass_WX26 = 0,
+    porttest_pass = 1,
+    porttest_timeout = 2,
+    porttest_socketNotOk = 3,
+    porttest_socketError = 4,
+    porttest_unreachable = 5
+  };
 
-    struct UiServerData {
-      UiServerData(): panel(0) {}
-      ChatPanel* panel;
-    };
+  struct UiServerData {
+    UiServerData() : panel(0) {}
+    ChatPanel* panel;
+  };
 
-    UiServerData uidata;
+  UiServerData uidata;
 
+  Server();
+  virtual ~Server();
 
-    Server();
-    virtual ~Server( );
+  // Server interface
 
-    // Server interface
+  virtual bool ExecuteSayCommand(const wxString& cmd) = 0;
 
-    virtual bool ExecuteSayCommand( const wxString& cmd ) = 0;
+  virtual bool Register(const wxString& addr, const int port, const wxString& nick, const wxString& password,
+                        wxString& reason) = 0;
+  virtual void AcceptAgreement() = 0;
 
-    virtual bool Register( const wxString& addr, const int port, const wxString& nick, const wxString& password,wxString& reason ) = 0;
-    virtual void AcceptAgreement() = 0;
+  virtual void Connect(const wxString& servername, const wxString& addr, const int port) = 0;
+  virtual void Disconnect() = 0;
+  virtual bool IsConnected() = 0;
 
-    virtual void Connect( const wxString& servername, const wxString& addr, const int port ) = 0;
-    virtual void Disconnect() = 0;
-    virtual bool IsConnected() = 0;
+  virtual void Login() = 0;
+  virtual void Logout() = 0;
+  virtual bool IsOnline() const = 0;
 
-    virtual void Login() = 0;
-    virtual void Logout() = 0;
-    virtual bool IsOnline()  const = 0;
+  virtual void Update(int mselapsed) = 0;
 
-    virtual void Update( int mselapsed ) = 0;
+  virtual void JoinChannel(const wxString& channel, const wxString& key) = 0;
+  virtual void PartChannel(const wxString& channel) = 0;
 
-    virtual void JoinChannel( const wxString& channel, const wxString& key ) = 0;
-    virtual void PartChannel( const wxString& channel ) = 0;
+  virtual void DoActionChannel(const wxString& channel, const wxString& msg) = 0;
+  virtual void SayChannel(const wxString& channel, const wxString& msg) = 0;
 
-    virtual void DoActionChannel( const wxString& channel, const wxString& msg ) = 0;
-    virtual void SayChannel( const wxString& channel, const wxString& msg ) = 0;
+  virtual void SayPrivate(const wxString& nick, const wxString& msg) = 0;
+  virtual void DoActionPrivate(const wxString& nick, const wxString& msg) = 0;
 
-    virtual void SayPrivate( const wxString& nick, const wxString& msg ) = 0;
-    virtual void DoActionPrivate( const wxString& nick, const wxString& msg ) = 0;
+  virtual void SayBattle(int battleid, const wxString& msg) = 0;
+  virtual void DoActionBattle(int battleid, const wxString& msg) = 0;
 
-    virtual void SayBattle( int battleid, const wxString& msg ) = 0;
-    virtual void DoActionBattle( int battleid, const wxString& msg ) = 0;
+  virtual void Ring(const wxString& nick) = 0;
 
-    virtual void Ring( const wxString& nick ) = 0;
+  virtual void ModeratorSetChannelTopic(const wxString& channel, const wxString& topic) = 0;
+  virtual void ModeratorSetChannelKey(const wxString& channel, const wxString& key) = 0;
+  virtual void ModeratorMute(const wxString& channel, const wxString& nick, int duration, bool byip) = 0;
+  virtual void ModeratorUnmute(const wxString& channel, const wxString& nick) = 0;
+  virtual void ModeratorKick(const wxString& channel, const wxString& reason) = 0;
+  virtual void ModeratorBan(const wxString& nick, bool byip) = 0;
+  virtual void ModeratorUnban(const wxString& nick) = 0;
+  virtual void ModeratorGetIP(const wxString& nick) = 0;
+  virtual void ModeratorGetLastLogin(const wxString& nick) = 0;
+  virtual void ModeratorGetLastIP(const wxString& nick) = 0;
+  virtual void ModeratorFindByIP(const wxString& ipadress) = 0;
 
-    virtual void ModeratorSetChannelTopic( const wxString& channel, const wxString& topic ) = 0;
-    virtual void ModeratorSetChannelKey( const wxString& channel, const wxString& key ) = 0;
-    virtual void ModeratorMute( const wxString& channel, const wxString& nick, int duration, bool byip ) = 0;
-    virtual void ModeratorUnmute( const wxString& channel, const wxString& nick ) = 0;
-    virtual void ModeratorKick( const wxString& channel, const wxString& reason ) = 0;
-    virtual void ModeratorBan( const wxString& nick, bool byip ) = 0;
-    virtual void ModeratorUnban( const wxString& nick ) = 0;
-    virtual void ModeratorGetIP( const wxString& nick ) = 0;
-    virtual void ModeratorGetLastLogin( const wxString& nick ) = 0;
-    virtual void ModeratorGetLastIP( const wxString& nick ) = 0;
-    virtual void ModeratorFindByIP( const wxString& ipadress ) = 0;
+  virtual void AdminGetAccountAccess(const wxString& nick) = 0;
+  virtual void AdminChangeAccountAccess(const wxString& nick, const wxString& accesscode) = 0;
+  virtual void AdminSetBotMode(const wxString& nick, bool isbot) = 0;
 
-    virtual void AdminGetAccountAccess( const wxString& nick ) = 0;
-    virtual void AdminChangeAccountAccess( const wxString& nick, const wxString& accesscode ) = 0;
-    virtual void AdminSetBotMode( const wxString& nick, bool isbot ) = 0;
+  virtual void HostBattle(BattleOptions bo, const wxString& password = _T("")) = 0;
+  virtual void JoinBattle(const int& battleid, const wxString& password = _T("")) = 0;
+  virtual void LeaveBattle(const int& battleid) = 0;
+  virtual void StartHostedBattle() = 0;
 
-    virtual void HostBattle( BattleOptions bo, const wxString& password = _T("") ) = 0;
-    virtual void JoinBattle( const int& battleid, const wxString& password = _T("") ) = 0;
-    virtual void LeaveBattle( const int& battleid ) = 0;
-    virtual void StartHostedBattle() = 0;
+  virtual void ForceSide(int battleid, User& user, int side) = 0;
+  virtual void ForceTeam(int battleid, User& user, int team) = 0;
+  virtual void ForceAlly(int battleid, User& user, int ally) = 0;
+  virtual void ForceColour(int battleid, User& user, const wxColour& col) = 0;
+  virtual void ForceSpectator(int battleid, User& user, bool spectator) = 0;
+  virtual void BattleKickPlayer(int battleid, User& user) = 0;
+  virtual void SetHandicap(int battleid, User& user, int handicap) = 0;
 
-    virtual void ForceSide( int battleid, User& user, int side ) = 0;
-    virtual void ForceTeam( int battleid, User& user, int team ) = 0;
-    virtual void ForceAlly( int battleid, User& user, int ally ) = 0;
-    virtual void ForceColour( int battleid, User& user, const wxColour& col ) = 0;
-    virtual void ForceSpectator( int battleid, User& user, bool spectator ) = 0;
-    virtual void BattleKickPlayer( int battleid, User& user ) = 0;
-    virtual void SetHandicap( int battleid, User& user, int handicap) = 0;
+  virtual void AddBot(int battleid, const wxString& nick, UserBattleStatus& status) = 0;
+  virtual void RemoveBot(int battleid, User& user) = 0;
+  virtual void UpdateBot(int battleid, User& user, UserBattleStatus& status) = 0;
 
+  virtual void SendHostInfo(HostInfo update) = 0;
+  virtual void SendHostInfo(const wxString& Tag) = 0;
+  virtual void SendRaw(const wxString& raw) = 0;
+  virtual void SendUserPosition(const User& usr) = 0;
 
-    virtual void AddBot( int battleid, const wxString& nick, UserBattleStatus& status ) = 0;
-    virtual void RemoveBot( int battleid, User& user ) = 0;
-    virtual void UpdateBot( int battleid, User& user, UserBattleStatus& status ) = 0;
+  virtual void RequestInGameTime(const wxString& nick) = 0;
 
-    virtual void SendHostInfo( HostInfo update ) = 0;
-    virtual void SendHostInfo( const wxString& Tag ) = 0;
-    virtual void SendRaw( const wxString& raw ) = 0;
-    virtual void SendUserPosition( const User& usr ) = 0;
+  virtual Battle* GetCurrentBattle() = 0;
 
-    virtual void RequestInGameTime( const wxString& nick ) = 0;
+  virtual void RequestChannels() = 0;
 
-    virtual Battle* GetCurrentBattle() = 0;
+  virtual void SendMyBattleStatus(UserBattleStatus& bs) = 0;
+  virtual void SendMyUserStatus() = 0;
 
-    virtual void RequestChannels() = 0;
+  virtual void SetKeepaliveInterval(int seconds) { m_keepalive = seconds; }
+  virtual int GetKeepaliveInterval() { return m_keepalive; }
 
-    virtual void SendMyBattleStatus( UserBattleStatus& bs ) = 0;
-    virtual void SendMyUserStatus() = 0;
+  virtual void SetUsername(const wxString& username) { m_user = username; }
+  virtual void SetPassword(const wxString& password) { m_pass = password; }
+  virtual bool IsPasswordHash(const wxString& pass) const = 0;
+  virtual wxString GetPasswordHash(const wxString& pass) const = 0;
 
-    virtual void SetKeepaliveInterval( int seconds ) { m_keepalive = seconds; }
-    virtual int GetKeepaliveInterval() { return m_keepalive; }
+  wxString GetRequiredSpring() const { return m_required_spring_ver; }
 
-    virtual void SetUsername( const wxString& username ) { m_user = username; }
-    virtual void SetPassword( const wxString& password ) { m_pass = password; }
-    virtual bool IsPasswordHash( const wxString& pass ) const = 0;
-    virtual wxString GetPasswordHash( const wxString& pass ) const = 0;
+  void SetRequiredSpring(const wxString& version) { m_required_spring_ver = version; }
 
-    wxString GetRequiredSpring() const { return m_required_spring_ver; }
+  virtual void OnConnected(Socket* sock) = 0;
+  virtual void OnDisconnected(Socket* sock) = 0;
+  virtual void OnDataReceived(Socket* sock) = 0;
 
-    void SetRequiredSpring( const wxString& version ) { m_required_spring_ver = version; }
+  virtual void OnDisconnected();
 
-    virtual void OnConnected( Socket* sock ) = 0;
-    virtual void OnDisconnected( Socket* sock ) = 0;
-    virtual void OnDataReceived( Socket* sock ) = 0;
+  BattleList_Iter* const battles_iter;
 
-    virtual void OnDisconnected();
+  virtual const User& GetMe() const = 0;
+  virtual User& GetMe() = 0;
+  User& GetUser(const wxString& nickname) const;
+  bool UserExists(const wxString& nickname) const;
 
-    BattleList_Iter* const battles_iter;
+  Channel& GetChannel(const wxString& name);
+  int GetNumChannels() const;
+  Channel& GetChannel(const int& index);
+  bool ChannelExists(const wxString& name) const;
 
-    virtual const User& GetMe() const = 0;
-    virtual User& GetMe() = 0;
-    User& GetUser( const wxString& nickname ) const;
-    bool UserExists( const wxString& nickname ) const;
+  Battle& GetBattle(const int& battleid);
+  bool BattleExists(const int& battleid) const;
 
-    Channel& GetChannel( const wxString& name );
-    int GetNumChannels() const;
-    Channel& GetChannel( const int& index );
-    bool ChannelExists( const wxString& name ) const;
+  virtual int TestOpenPort(unsigned int port) const = 0;
 
-    Battle& GetBattle( const int& battleid );
-    bool BattleExists( const int& battleid ) const;
+  virtual void SendScriptToProxy(const wxString& script) = 0;
 
-    virtual int TestOpenPort( unsigned int port ) const = 0;
+  virtual void SendScriptToClients(const wxString& script) = 0;
 
-    virtual void SendScriptToProxy( const wxString& script ) = 0;
+  std::map<wxString, wxString> m_channel_pw; /// channel name -> password, filled on channel join
 
-    virtual void SendScriptToClients( const wxString& script ) = 0;
+  /// used to fill userlist in groupuserdialog
+  const UserList& GetUserList() const { return m_users; }
 
-    std::map<wxString,wxString> m_channel_pw;  /// channel name -> password, filled on channel join
+  unsigned int GetNumUsers() const { return m_users.GetNumUsers(); }
 
-    ///used to fill userlist in groupuserdialog
-    const UserList& GetUserList() const {return m_users;}
+  wxString GetServerName() const { return m_server_name; }
 
-    unsigned int GetNumUsers() const { return m_users.GetNumUsers(); }
+  virtual void RequestSpringUpdate();
 
-    wxString GetServerName() const { return m_server_name; }
+  virtual void SetRelayIngamePassword(const User& user) = 0;
 
-    virtual void RequestSpringUpdate();
+  virtual wxArrayString GetRelayHostList();
 
-	virtual void SetRelayIngamePassword( const User& user ) = 0;
+  virtual const IServerEvents* serverEvents() const = 0;
 
-	virtual wxArrayString GetRelayHostList();
+protected:
+  Socket* m_sock;
+  int m_keepalive;
+  wxString m_user;
+  wxString m_pass;
+  wxString m_server_name;
+  bool m_pass_hash;
+  wxString m_required_spring_ver;
 
-	virtual const IServerEvents* serverEvents() const = 0;
+  ChannelList m_channels;
+  UserList m_users;
+  BattleList m_battles;
 
-  protected:
-	Socket* m_sock;
-    int m_keepalive;
-    wxString m_user;
-    wxString m_pass;
-    wxString m_server_name;
-    bool m_pass_hash;
-    wxString m_required_spring_ver;
+  wxString m_relay_host_bot;
+  wxString m_relay_host_manager;
 
-    ChannelList m_channels;
-    UserList m_users;
-    BattleList m_battles;
+  wxArrayString m_relay_host_manager_list;
 
-    wxString m_relay_host_bot;
-    wxString m_relay_host_manager;
+  User& _AddUser(const wxString& user);
+  void _RemoveUser(const wxString& nickname);
 
-    wxArrayString m_relay_host_manager_list;
+  Channel& _AddChannel(const wxString& chan);
+  void _RemoveChannel(const wxString& name);
 
-    User& _AddUser( const wxString& user );
-    void _RemoveUser( const wxString& nickname );
+  Battle& _AddBattle(const int& id);
+  void _RemoveBattle(const int& id);
 
-    Channel& _AddChannel( const wxString& chan );
-    void _RemoveChannel( const wxString& name );
+  static const unsigned int PING_TIMEOUT = 40;
 
-    Battle& _AddBattle( const int& id );
-    void _RemoveBattle( const int& id );
-
-    static const unsigned int PING_TIMEOUT = 40;
-
-    virtual void SendCmd( const wxString& command, const wxString& param ) = 0;
-    virtual void RelayCmd( const wxString& command, const wxString& param ) = 0;
-
+  virtual void SendCmd(const wxString& command, const wxString& param) = 0;
+  virtual void RelayCmd(const wxString& command, const wxString& param) = 0;
 };
 
 class ServerSelector;
@@ -229,16 +224,16 @@ ServerSelector& serverSelector();
 #include <lslutils/globalsmanager.h>
 class ServerSelector {
 public:
-	Server& GetServer();
-	const Server& GetServer() const;
-	void SetCurrentServer(Server* server);
-	bool    GetServerStatus() const;
-protected:
-	ServerSelector();
-	Server* m_serv;
-	friend class LSL::Util::GlobalObjectHolder<ServerSelector, LSL::Util::LineInfo<ServerSelector> >;
-};
+  Server& GetServer();
+  const Server& GetServer() const;
+  void SetCurrentServer(Server* server);
+  bool GetServerStatus() const;
 
+protected:
+  ServerSelector();
+  Server* m_serv;
+  friend class LSL::Util::GlobalObjectHolder<ServerSelector, LSL::Util::LineInfo<ServerSelector>>;
+};
 
 #endif // SPRINGLOBBY_HEADERGUARD_SERVER_H
 
@@ -258,4 +253,3 @@ protected:
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

@@ -5,7 +5,6 @@
 #include "ToasterBoxWindow.h"
 
 WX_DECLARE_LIST(ToasterBoxWindow, ToasterBoxWindowList);
-typedef ToasterBoxWindowList::compatibility_iterator
-		ToasterBoxWindowListNode;
+typedef ToasterBoxWindowList::compatibility_iterator ToasterBoxWindowListNode;
 
 #endif // SPRINGLOBBY_TOASTERWINDOWLIST_HEADERGUARD

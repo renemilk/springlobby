@@ -10,39 +10,34 @@ class MainSinglePlayerTab;
 class wxColour;
 class wxString;
 
+class SinglePlayerBattle : public IBattle {
+public:
+  SinglePlayerBattle(MainSinglePlayerTab& msptab);
+  virtual ~SinglePlayerBattle();
 
-class SinglePlayerBattle: public IBattle
-{
-  public:
+  // (koshi) these are never called
+  //    unsigned int AddBot( int ally, int posx, int posy, int handicap, const wxString& aidll );
+  //    void UpdateBot( unsigned int index, int ally, int posx, int posy, int side );
 
-    SinglePlayerBattle( MainSinglePlayerTab& msptab );
-    virtual ~SinglePlayerBattle();
+  bool IsFounderMe() const { return true; }
 
-// (koshi) these are never called
-//    unsigned int AddBot( int ally, int posx, int posy, int handicap, const wxString& aidll );
-//    void UpdateBot( unsigned int index, int ally, int posx, int posy, int side );
+  User& GetMe() { return m_me; }
+  const User& GetMe() const { return m_me; }
 
-	bool IsFounderMe() const { return true; }
+  void SendHostInfo(HostInfo update);
+  void SendHostInfo(const wxString& /*unused*/) {}
 
-    User& GetMe() { return m_me; }
-    const User& GetMe() const { return m_me; }
+  void Update(const wxString& Tag);
 
-    void SendHostInfo( HostInfo update );
-    void SendHostInfo( const wxString& /*unused*/ ){ }
+  void StartSpring();
 
-    void Update( const wxString& Tag );
+protected:
+  void RemoveUnfittingBots();
 
-    void StartSpring();
+  MainSinglePlayerTab& m_sptab;
 
-  protected:
-    void RemoveUnfittingBots();
-
-    MainSinglePlayerTab& m_sptab;
-
-    User m_me;
-
+  User m_me;
 };
-
 
 #endif // SPRINGLOBBY_HEADERGUARD_SINGLEPLAYERBATTLE_H
 
@@ -62,4 +57,3 @@ class SinglePlayerBattle: public IBattle
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

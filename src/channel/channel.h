@@ -12,78 +12,76 @@ class Ui;
 class ChatPanel;
 
 struct UiChannelData {
-  UiChannelData(): panel(0) {}
+  UiChannelData() : panel(0) {}
 
   ChatPanel* panel;
 };
 
-class Channel : public UserList, public SL::NonCopyable
-{
-  public:
+class Channel : public UserList, public SL::NonCopyable {
+public:
+  UiChannelData uidata;
 
-    UiChannelData uidata;
+  // Channel(): m_serv(0),m_userdata(0) {}
+  Channel(Server& serv);
+  virtual ~Channel();
 
-    //Channel(): m_serv(0),m_userdata(0) {}
-    Channel( Server& serv );
-    virtual ~Channel();
+  Server& GetServer() { return m_serv; }
 
-    Server& GetServer() { return m_serv; }
+  void SetName(const wxString& name);
+  wxString GetName();
+  User& GetMe();
 
-    void SetName( const wxString& name );
-    wxString GetName();
-    User& GetMe();
+  // filtering functions
+  void CheckBanned(const wxString& name);
+  bool IsBanned(const wxString& name);
 
-    // filtering functions
-    void CheckBanned(const wxString& name);
-    bool IsBanned(const wxString& name);
+  // Channel Functions
+  void Say(const wxString& message);
+  void DoAction(const wxString& action);
+  void Leave();
+  void Rejoin();
 
-    // Channel Functions
-    void Say( const wxString& message );
-    void DoAction( const wxString& action );
-    void Leave();
-	void Rejoin();
+  void Said(User& who, const wxString& message);
 
-    void Said( User& who, const wxString& message );
+  void DidAction(User& who, const wxString& action);
 
-    void DidAction( User& who, const wxString& action );
+  void Left(User& who, const wxString& reason);
+  void Joined(User& who);
 
-    void Left( User& who, const wxString& reason );
-    void Joined( User& who );
+  void OnChannelJoin(User& who);
 
-    void OnChannelJoin( User& who );
+  void SetTopic(const wxString& topic, const wxString& who);
+  wxString GetTopic();
+  wxString GetTopicSetBy();
 
-    void SetTopic( const wxString& topic, const wxString& who );
-    wxString GetTopic();
-    wxString GetTopicSetBy();
+  bool ExecuteSayCommand(const wxString& in);
 
-    bool ExecuteSayCommand( const wxString& in );
+  wxString GetPassword();
+  void SetPassword(const wxString& pw);
 
-    wxString GetPassword();
-    void SetPassword( const wxString& pw );
+protected:
+  Server& m_serv;
 
-  protected:
-    Server& m_serv;
+  std::set<wxString> m_banned_users;
 
-    std::set<wxString> m_banned_users;
+  bool m_do_ban_regex;
+  wxRegEx m_ban_regex;
 
-    bool m_do_ban_regex;
-    wxRegEx m_ban_regex;
+  bool m_do_unban_regex;
+  wxRegEx m_unban_regex;
 
-    bool m_do_unban_regex;
-    wxRegEx m_unban_regex;
+  wxString m_ban_regex_msg;
 
-    wxString m_ban_regex_msg;
+  wxString m_topic;
+  wxString m_topic_nick;
+  wxString m_name;
 
-    wxString m_topic;
-    wxString m_topic_nick;
-    wxString m_name;
+  void* m_userdata;
 
-    void* m_userdata;
+  wxString m_password;
 
-    wxString m_password;
-
-    void AddUser( User& user );
-    void RemoveUser( const wxString& nick );
+  void AddUser(User& user);
+  void RemoveUser(const wxString& nick);
 };
 
 #endif // SPRINGLOBBY_HEADERGUARD_CHANNEL_H
@@ -104,4 +102,3 @@ class Channel : public UserList, public SL::NonCopyable
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

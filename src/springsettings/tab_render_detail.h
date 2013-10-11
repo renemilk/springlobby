@@ -29,29 +29,30 @@ class wxSize;
 class wxCloseEvent;
 class wxStaticBoxSizer;
 
-class tab_render_detail : public abstract_panel
-{
+class tab_render_detail : public abstract_panel {
 
-	public:
-		tab_render_detail(wxWindow *parent, wxWindowID id = 1, const wxString &title = wxT("Project2"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0);
-		virtual ~tab_render_detail();
+public:
+  tab_render_detail(wxWindow* parent, wxWindowID id = 1, const wxString& title = wxT("Project2"),
+                    const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0);
+  virtual ~tab_render_detail();
 
-		void initRendererSizer(wxFlexGridSizer*,wxFlexGridSizer*);
-		void updateControls(int what_to_update);
-    protected:
-        void OnClose(wxCloseEvent& event);
-		void CreateGUIControls();
+  void initRendererSizer(wxFlexGridSizer*, wxFlexGridSizer*);
+  void updateControls(int what_to_update);
 
-		wxSlider** ctrl_detail_sliders;
-		static const int ctrl_detail_sliders_size = 9;
+protected:
+  void OnClose(wxCloseEvent& event);
+  void CreateGUIControls();
 
-		wxSizer* renderSizer ;
-					wxSizer* parentSizer ;
-					wxFlexGridSizer* rendererSizerA ;
-					wxFlexGridSizer* rendererSizerB ;
-					wxStaticBoxSizer* box ;
+  wxSlider** ctrl_detail_sliders;
+  static const int ctrl_detail_sliders_size = 9;
 
-		DECLARE_EVENT_TABLE()
+  wxSizer* renderSizer;
+  wxSizer* parentSizer;
+  wxFlexGridSizer* rendererSizerA;
+  wxFlexGridSizer* rendererSizerB;
+  wxStaticBoxSizer* box;
+
+  DECLARE_EVENT_TABLE()
 };
 
 #endif

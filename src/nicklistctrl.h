@@ -11,56 +11,52 @@ class Ui;
 class ChatPanelMenu;
 class UserMenu;
 
-class NickListCtrl : public CustomVirtListCtrl< const User* ,NickListCtrl >
-{
-  protected:
-    typedef SL_GENERIC::UserMenu<ChatPanelMenu> UserMenu;
+class NickListCtrl : public CustomVirtListCtrl<const User*, NickListCtrl> {
+protected:
+  typedef SL_GENERIC::UserMenu<ChatPanelMenu> UserMenu;
 
-  public:
-    NickListCtrl( wxWindow* parent, bool show_header = true, UserMenu* popup = 0,
-        bool singleSelectList = true, const wxString& name = _T("NickListCtrl"), bool highlight = true  );
-    virtual ~NickListCtrl();
+public:
+  NickListCtrl(wxWindow* parent, bool show_header = true, UserMenu* popup = 0, bool singleSelectList = true,
+               const wxString& name = _T("NickListCtrl"), bool highlight = true);
+  virtual ~NickListCtrl();
 
-    virtual void AddUser( const User& user );
-    void RemoveUser( const User& user );
+  virtual void AddUser(const User& user);
+  void RemoveUser(const User& user);
 
-    void UserUpdated( const User& user );
+  void UserUpdated(const User& user);
 
-    void ClearUsers();
+  void ClearUsers();
 
-    void OnActivateItem( wxListEvent& event );
-    void OnShowMenu( wxContextMenuEvent& event );
-    virtual void SetTipWindowText( const long item_hit, const wxPoint& position);
+  void OnActivateItem(wxListEvent& event);
+  void OnShowMenu(wxContextMenuEvent& event);
+  virtual void SetTipWindowText(const long item_hit, const wxPoint& position);
 
-    void HighlightItem( long item );
+  void HighlightItem(long item);
 
-    //these are overloaded to use list in virtual style
-    wxString GetItemText(long item, long column) const;
-    int GetItemColumnImage(long item, long column) const;
-    wxListItemAttr * GetItemAttr(long item) const;
+  // these are overloaded to use list in virtual style
+  wxString GetItemText(long item, long column) const;
+  int GetItemColumnImage(long item, long column) const;
+  wxListItemAttr* GetItemAttr(long item) const;
 
-  protected:
+protected:
+  //! passed as callback to generic ItemComparator, returns -1,0,1 as per defined ordering
+  int CompareOneCrit(DataType u1, DataType u2, int col, int dir) const;
+  //! utils func for comparing user status, so the CompareOneCrit doesn't get too crowded
+  static int CompareUserStatus(DataType u1, DataType u2);
+  //! required per base clase
+  virtual void Sort();
 
-    //! passed as callback to generic ItemComparator, returns -1,0,1 as per defined ordering
-	int CompareOneCrit( DataType u1, DataType u2, int col, int dir ) const;
-    //! utils func for comparing user status, so the CompareOneCrit doesn't get too crowded
-    static int CompareUserStatus( DataType u1, DataType u2 );
-    //! required per base clase
-    virtual void Sort( );
+  int GetIndexFromData(const DataType& data) const;
 
-    int GetIndexFromData( const DataType& data ) const;
+  UserMenu* m_menu;
 
-    UserMenu* m_menu;
+  enum {
+    NICK_LIST = 31765 // wxID_HIGHEST
+    // wxID_HIGHEST is used by BattleListCTRL. The cant be in the same Tab like BattleTab
+  };
 
-    enum {
-      NICK_LIST = 31765 //wxID_HIGHEST
-      //wxID_HIGHEST is used by BattleListCTRL. The cant be in the same Tab like BattleTab
-    };
-
-
-    DECLARE_EVENT_TABLE()
+  DECLARE_EVENT_TABLE()
 };
-
 
 #endif // SPRINGLOBBY_HEADERGUARD_NICKLISTCTRL_H
 
@@ -80,4 +76,3 @@ class NickListCtrl : public CustomVirtListCtrl< const User* ,NickListCtrl >
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

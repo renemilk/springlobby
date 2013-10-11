@@ -6,16 +6,15 @@
 #include <utility>
 
 namespace BattleEvents {
-	enum BattleEventsTypes {
-		AddBattle = 0,
-		RemoveBattle = 1,
-		UpdateBattle = 2,
-		BattleInfoUpdate = 3
-	};
+enum BattleEventsTypes {
+  AddBattle = 0,
+  RemoveBattle = 1,
+  UpdateBattle = 2,
+  BattleInfoUpdate = 3
+};
 
-	typedef std::pair<IBattle*,wxString> BattleEventData;
+typedef std::pair<IBattle*, wxString> BattleEventData;
 
-	EventSender<BattleEventData> &GetBattleEventSender( BattleEventsTypes cmd );
-
+EventSender<BattleEventData>& GetBattleEventSender(BattleEventsTypes cmd);
 }
 #endif // SPRINGLOBBY_HEADERGUARD_BATTLEEVENTS_H

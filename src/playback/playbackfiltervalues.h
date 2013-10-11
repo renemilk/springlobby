@@ -3,25 +3,23 @@
 
 #include <wx/string.h>
 
-struct PlaybackListFilterValues
-{
-    // checkboxes
-        bool map_show;
-        bool mod_show;
+struct PlaybackListFilterValues {
+  // checkboxes
+  bool map_show;
+  bool mod_show;
 
-    //text fields
-        wxString map;
-        wxString mod;
-        wxString filesize;
-        wxString duration;
-    //choices
-        wxString player_num;
+  // text fields
+  wxString map;
+  wxString mod;
+  wxString filesize;
+  wxString duration;
+  // choices
+  wxString player_num;
 
-
-    //modifiers
-        wxString player_mode;
-        wxString filesize_mode;
-        wxString duration_mode;
+  // modifiers
+  wxString player_mode;
+  wxString filesize_mode;
+  wxString duration_mode;
 };
 
 #endif // PlaybackListFilterValues_H_INCLUDED
@@ -42,4 +40,3 @@ struct PlaybackListFilterValues
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-

@@ -15,66 +15,60 @@ class wxImageList;
 class wxString;
 
 //! @brief The main chat tab.
-class MainChatTab : public wxScrolledWindow
-{
+class MainChatTab : public wxScrolledWindow {
 public:
-	MainChatTab( wxWindow* parent );
-	~MainChatTab();
+  MainChatTab(wxWindow* parent);
+  ~MainChatTab();
 
-	ChatPanel* GetActiveChatPanel();
-	ChatPanel* GetChannelChatPanel( const wxString& channel );
-	ChatPanel* GetUserChatPanel( const wxString& user );
+  ChatPanel* GetActiveChatPanel();
+  ChatPanel* GetChannelChatPanel(const wxString& channel);
+  ChatPanel* GetUserChatPanel(const wxString& user);
 
-	ChatPanel& ServerChat();
+  ChatPanel& ServerChat();
 
-	ChatPanel* AddChatPanel( Channel& channel, bool doFocus  );
-	ChatPanel* AddChatPanel( Server& server, const wxString& name );
-	ChatPanel* AddChatPanel( const User& user );
-	/** \brief this is only used if channel is left via raw command in server tab */
-	bool RemoveChatPanel( ChatPanel* panel );
+  ChatPanel* AddChatPanel(Channel& channel, bool doFocus);
+  ChatPanel* AddChatPanel(Server& server, const wxString& name);
+  ChatPanel* AddChatPanel(const User& user);
+  /** \brief this is only used if channel is left via raw command in server tab */
+  bool RemoveChatPanel(ChatPanel* panel);
 
+  void RejoinChannels();
+  void LeaveChannels();
 
-	void RejoinChannels();
-	void LeaveChannels();
+  void BroadcastMessage(const wxString& message);
 
-	void BroadcastMessage( const wxString& message );
+  void OnUserConnected(User& user);
+  void OnUserDisconnected(User& user);
 
-	void OnUserConnected( User& user );
-	void OnUserDisconnected( User& user );
+  void UpdateNicklistHighlights();
 
-
-	void UpdateNicklistHighlights();
-
-	void AdvanceSelection( bool forward );
+  void AdvanceSelection(bool forward);
 
 private:
-	ChatPanel* GetCurrentPanel();
+  ChatPanel* GetCurrentPanel();
 
-	void OnTabsChanged( wxAuiNotebookEvent& event );
-	void OnTabClose( wxAuiNotebookEvent& event );
+  void OnTabsChanged(wxAuiNotebookEvent& event);
+  void OnTabClose(wxAuiNotebookEvent& event);
 
-	void LoadPerspective( const wxString& perspective_name = wxEmptyString );
-	void SavePerspective( const wxString& perspective_name = wxEmptyString );
+  void LoadPerspective(const wxString& perspective_name = wxEmptyString);
+  void SavePerspective(const wxString& perspective_name = wxEmptyString);
 
-	wxImage ReplaceChannelStatusColour( wxBitmap img, const wxColour& colour ) const;
+  wxImage ReplaceChannelStatusColour(wxBitmap img, const wxColour& colour) const;
 
+  wxWindow* m_close_window;
+  SLChatNotebook* m_chat_tabs;
+  wxBoxSizer* m_main_sizer;
+  wxImageList* m_imagelist;
+  ChatPanel* m_server_chat;
+  ChatPanel* m_main_chat;
+  int m_newtab_sel;
 
-	wxWindow* m_close_window;
-	SLChatNotebook* m_chat_tabs;
-	wxBoxSizer* m_main_sizer;
-	wxImageList* m_imagelist;
-	ChatPanel* m_server_chat;
-	ChatPanel* m_main_chat;
-	int m_newtab_sel;
+  enum {
+    CHAT_TABS = wxID_HIGHEST
+  };
 
-	enum {
-		CHAT_TABS = wxID_HIGHEST
-	};
-
-	DECLARE_EVENT_TABLE()
+  DECLARE_EVENT_TABLE()
 };
-
-
 
 #endif // SPRINGLOBBY_HEADERGUARD_MAINCHATTAB_H
 
@@ -94,4 +88,3 @@ private:
     You should have received a copy of the GNU General Public License
     along with SpringLobby.  If not, see <http://www.gnu.org/licenses/>.
 **/
-
